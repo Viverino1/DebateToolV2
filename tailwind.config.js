@@ -8,10 +8,15 @@ export default {
   ],
   theme: {
     colors: {
-      "text-primary": colors.neutral[100],
-      "text-secondary": colors.neutral[300],
+      text: {
+        important: colors.neutral[100],
+        DEFAULT: colors.neutral[300],
+      },
       background: colors.neutral[900],
-      primary: colors.red[500],
+      primary: {
+        DEFAULT: colors.red[500],
+        1: colors.amber[500],
+      },
       secondary: colors.neutral[500],
       accent: colors.neutral[800],
     },
@@ -21,11 +26,11 @@ export default {
       },
       keyframes: {
         background: {
-          '0%': {
-            transform: 'rotate(0deg)',
+          '0%, 100%': {
+            transform: 'rotate(0deg) scale(1, 1)',
           },
-          '100%': {
-            transform: 'rotate(360deg)',
+          '50%': {
+            transform: 'rotate(180deg) scale(1, 1.5)',
           },
         }
       }

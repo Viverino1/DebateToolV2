@@ -18,6 +18,7 @@ export default {
         '23' : '92px',
         '25' : '100px',
         '26' : '104px',
+        '28' : '112px',
         '34' : '136px',
         '68' : '272px',
         '90' : '360px',
@@ -65,12 +66,6 @@ export default {
   plugins: [
     ({ addUtilities, addComponents }) => {
       addUtilities({
-        ".border": {
-          "@apply border-2 border-background-light rounded hover:border-primary transition": {},
-        },
-        ".borderless": {
-          "@apply border-2 border-transparent rounded": {},
-        },
         ".transition": {
           "@apply transition-all duration-300": {}
         },

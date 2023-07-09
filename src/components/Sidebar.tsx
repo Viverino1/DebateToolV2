@@ -1,76 +1,116 @@
-import { ReactElement } from "react";
-import { BootstrapReboot, CardHeading, FileEarmarkText } from "react-bootstrap-icons";
+import { ReactElement } from "react"
+import { BootstrapReboot, CardHeading } from "react-bootstrap-icons"
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../utils/redux/hooks";
+import { setSide, setTopic } from "../utils/redux/reducers/appSlice";
+import { getTopics } from "../utils/firebase/firestore/firestore";
+import { useQuery } from "react-query";
 
 export default function Sidebar(){
-  const navigate = useNavigate();
-  const sideBarIconSize = 30;
+  const iconSize = 30;
   return(
-    <div className={"relative group z-10 h-full w-26 hover:w-90 bg-background transition overflow-clip text-text-light text-xl"}>
-      <button className="relative items-center w-full h-20 p-4 flex space-x-4 outline-none" onClick={() => navigate("/home")}>
-        <img src="/DebateToolLogo.svg" 
-        className="absolute rounded-full h-16"/>
-        <div className="pl-16 w-full h-full flex items-center whitespace-nowrap opacity-0 group-hover:opacity-100 transition">Debate Tool</div>
-      </button>
+    <div className="fixed top-0 left-0 bottom-0 z-50 w-22 h-screen p-4 space-y-4 flex flex-col bg-background text-text-light">
+      <Icon 
+      icon={<img src="/DebateToolLogo.svg" className="w-12"/>}
+      text="Debate Tool"
+      link="/home"
+      />
 
-      <NavBarDivider/>
-      
-      <div className="p-4 flex flex-col space-y-4">
-        {/* <SidebarElement
-        link="settings"
-        text="Vivek Maddineni"
-        icon={<img src="https://lh3.googleusercontent.com/ogw/AGvuzYaRgljT5O44UcHXi1x9scf5MYnlB30pKu_V1YrITg=s64-c-mo" className="w-12 rounded-full"/>}
-        /> */}
-        <SidebarElement
-        link="cards"
-        text="Cards"
-        icon={<CardHeading size={sideBarIconSize}/>}
-        />
-        <SidebarElement
-        link="case"
-        text="Case"
-        icon={<FileEarmarkText size={sideBarIconSize}/>}
-        />
-        <SidebarElement
-        link="rounds"
-        text="Rounds"
-        icon={<BootstrapReboot size={sideBarIconSize}/>}
-        />
-      </div>
-      <NavBarDivider/>
+      <Divider/>
 
-      <div className="w-full h-fit">
-        
-      </div>
+      <Icon 
+      icon={<CardHeading size={iconSize}/>}
+      text="Cards"
+      link="cards"
+      />
 
-      <div className="absolute bottom-0 w-full">
-        <NavBarDivider/>
-        <div className=" w-full h-24 p-4 flex space-x-4">
-          <img src="https://lh3.googleusercontent.com/ogw/AGvuzYaRgljT5O44UcHXi1x9scf5MYnlB30pKu_V1YrITg=s64-c-mo" 
-          className="!rounded-full border h-16"/>
-          <div className="w-full h-full flex items-center whitespace-nowrap opacity-0 group-hover:opacity-100 transition">Vivek Maddineni</div>
-        </div>
-      </div>
+      <Icon 
+      icon={<BootstrapReboot size={iconSize}/>}
+      text="Rounds"
+      link="rounds"
+      />
+
+      <Divider/>
+
+      <SideSelector/>
+
+      <TopicSelector/>
     </div>
   )
 }
 
-function SidebarElement(props: {link: string, text: string, icon: ReactElement}){
-  const {link, text, icon} = props;
-
+function Icon(props: {icon: ReactElement, text: string, link: string}){
+  const {icon, text, link} = props;
   const navigate = useNavigate();
 
-  const doesIncludeLink = useLocation().pathname.includes(link);
-
+  const isActive = useLocation().pathname.includes(link);
+  
   return(
-    <button className={`flex h-16 borderless transition outline-none w-full overflow-clip ${doesIncludeLink? "bg-primary glow" : "group-hover:border"}`}
-    onClick={() => navigate(link)}>
-      <div className="h-full aspect-square center">{icon}</div>
-      <div className="flex h-full items-center group-hover:opacity-100 opacity-0 transition whitespace-nowrap">{text}</div>
-    </button>
+    <div className="center">
+      <button
+      onClick={() => {
+        navigate(link);
+      }}
+      className={`peer w-full aspect-square center rounded-[32px] border-2 transition border-transparent ${isActive? "bg-primary rounded" : "hover:rounded hover:border-secondary hover:bg-background-light"}`}>
+        {icon}
+      </button>
+      <Tooltip text={text}/>
+    </div>
   )
 }
 
-function NavBarDivider(){
-  return <div className="w-full h-0.5 bg-transparent group-hover:bg-background-light transition"/>
+function Divider(){
+  return(
+    <div className="w-full h-0.5 bg-background-light"></div>
+  )
+}
+
+function Tooltip(props: {text: string}){
+  return(
+    <span className="absolute bg-background-light border-2 border-secondary peer-hover:opacity-100 opacity-0 transition px-2 py-1 left-24 rounded scale-0 peer-hover:scale-100 whitespace-nowrap">
+      {props.text}
+    </span>
+  )
+}
+
+function SideSelector(){
+  const dispatch = useAppDispatch();
+  const side = useAppSelector(state => state.app.side);
+
+  return(
+    <div className="center">
+      <select className="peer w-full group bg-background hover:bg-background-light border-transparent hover:border-secondary rounded-3xl hover:rounded
+      border-2 h-10 transition outline-none text-center appearance-none"
+      onChange={(e) => dispatch(setSide(e.target.value as Side))}
+      value={side}>
+        <option value="AFF">AFF</option>
+        <option value="NEG">NEG</option>
+      </select>
+      <Tooltip text="Side"/>
+    </div>
+  )
+}
+
+function TopicSelector(){
+  const dispatch = useAppDispatch();
+  const topic = useAppSelector(state => state.app.topic);
+
+  const {isLoading, error, data: topics} = useQuery('topics', getTopics);
+
+  const loading = true;
+
+  return(
+    <div className="center">
+      <select className={`peer w-full group bg-background hover:bg-background-light border-transparent hover:border-secondary rounded-3xl hover:rounded
+      border-2 h-10 transition outline-none text-center appearance-none ${isLoading? "border-x-background-light rounded animate-pulse" : ""}`}
+      onChange={(e) => dispatch(setTopic(e.target.value))}
+      disabled={isLoading}
+      value={topic}>
+        {topics?.map((t) => (
+          <option key={t} value={t}>{t}</option>
+        ))}
+      </select>
+      <Tooltip text={`Side ${isLoading? "- Loading" : ""}`}/>
+    </div>
+  )
 }

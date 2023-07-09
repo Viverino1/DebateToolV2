@@ -75,8 +75,8 @@ export default {
         ".rounded": {
           "@apply rounded-xl": {}
         },
-        ".glow" : {
-          filter: `drop-shadow(0 0 12px ${colors.red[500]})`,
+        ".glow-primary" : {
+          filter: `drop-shadow(0 0 7px ${colors.red[500]})`,
         }
       });
     },

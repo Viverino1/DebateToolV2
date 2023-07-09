@@ -1,5 +1,5 @@
 import { ReactElement } from "react"
-import { BootstrapReboot, CardHeading } from "react-bootstrap-icons"
+import { BootstrapReboot, CardHeading, FileEarmarkText } from "react-bootstrap-icons"
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../utils/redux/hooks";
 import { setSide, setTopic } from "../utils/redux/reducers/appSlice";
@@ -9,32 +9,49 @@ import { useQuery } from "react-query";
 export default function Sidebar(){
   const iconSize = 30;
   return(
-    <div className="fixed top-0 left-0 bottom-0 z-50 w-22 h-screen p-4 space-y-4 flex flex-col bg-background text-text-light">
-      <Icon 
-      icon={<img src="/DebateToolLogo.svg" className="w-12"/>}
-      text="Debate Tool"
-      link="/home"
-      />
+    <div className="fixed top-0 left-0 bottom-0 z-50 w-22 h-screen p-4 bg-background text-text-light flex flex-col justify-between">
+      <div className="flex flex-col space-y-4">
+        <Icon 
+        icon={<img src="/DebateToolLogo.svg" className="w-12"/>}
+        text="Debate Tool"
+        link="/home"
+        />
 
-      <Divider/>
+        <Divider/>
 
-      <Icon 
-      icon={<CardHeading size={iconSize}/>}
-      text="Cards"
-      link="cards"
-      />
+        <Icon 
+        icon={<CardHeading size={iconSize}/>}
+        text="Cards"
+        link="cards"
+        />
 
-      <Icon 
-      icon={<BootstrapReboot size={iconSize}/>}
-      text="Rounds"
-      link="rounds"
-      />
+        <Icon 
+        icon={<FileEarmarkText size={iconSize}/>}
+        text="Case"
+        link="case"
+        />
 
-      <Divider/>
+        <Icon 
+        icon={<BootstrapReboot size={iconSize}/>}
+        text="Rounds"
+        link="rounds"
+        />
 
-      <SideSelector/>
+        <Divider/>
 
-      <TopicSelector/>
+        <SideSelector/>
+
+        <TopicSelector/>
+      </div>
+      <div className="flex flex-col space-y-4">
+        <Divider/>
+
+        <Icon 
+        icon={<img src="https://lh3.googleusercontent.com/ogw/AGvuzYb8Az9mueXWBCrZlm6FogE9a6D-WAWivPYEKrkB7g=s32-c-mo" className="w-10 rounded-full"/>}
+        text="Vivek Maddineni"
+        link="settings"
+        />
+      </div>
     </div>
   )
 }
@@ -51,7 +68,7 @@ function Icon(props: {icon: ReactElement, text: string, link: string}){
       onClick={() => {
         navigate(link);
       }}
-      className={`peer w-full aspect-square center rounded-[32px] border-2 transition border-transparent ${isActive? "bg-primary rounded" : "hover:rounded hover:border-secondary hover:bg-background-light"}`}>
+      className={`peer w-full aspect-square center rounded-[32px] border-2 transition border-transparent ${isActive? "bg-primary rounded glow-primary" : "hover:rounded hover:border-secondary hover:bg-background-light"}`}>
         {icon}
       </button>
       <Tooltip text={text}/>
@@ -67,7 +84,7 @@ function Divider(){
 
 function Tooltip(props: {text: string}){
   return(
-    <span className="absolute bg-background-light border-2 border-secondary peer-hover:opacity-100 opacity-0 transition px-2 py-1 left-24 rounded scale-0 peer-hover:scale-100 whitespace-nowrap">
+    <span className="absolute bg-background-light/50 backdrop-blur-sm border-2 border-secondary peer-hover:opacity-100 opacity-0 transition px-2 py-1 left-24 rounded scale-0 peer-hover:scale-100 whitespace-nowrap">
       {props.text}
     </span>
   )

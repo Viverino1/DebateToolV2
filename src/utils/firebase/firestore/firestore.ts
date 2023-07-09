@@ -1,5 +1,5 @@
 import { CollectionReference, DocumentData, collection, doc, getDoc, getFirestore } from "firebase/firestore";
-import app from "../config";
+import app, { auth } from "../firebase";
 
 const db = getFirestore(app);
 
@@ -19,7 +19,19 @@ async function getTopics(){
   return topics as string[];
 }
 
+async function getCurrentUser(){
+  const uid = auth.currentUser?.uid;
+
+  if(uid){
+    const user = await getDoc(doc(db, "users", uid));
+    return user;
+  }else{
+    return undefined;
+  }
+}
+
 export{
   getSchools,
   getTopics,
+  getCurrentUser,
 }

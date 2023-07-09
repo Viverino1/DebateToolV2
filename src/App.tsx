@@ -1,29 +1,31 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/home/Home";
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/home/HomePage";
 import Sidebar from "./components/Sidebar";
-import { QueryClient, QueryClientProvider } from "react-query";
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    }
-  }
-});
+import { auth } from "./utils/firebase/firebase";
+import {useAuthState} from "react-firebase-hooks/auth";
+import Auth from "./pages/auth/AuthPage";
 
 export default function App(){
-  return(
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <div className="flex">
-          <Sidebar/>
-          <div className="fixed top-0 right-0 left-22 bottom-0 h-screen bg-background-dark text-text">
-            <Routes>
-              <Route path="/home" element={<Home/>}/>
-            </Routes>
-          </div>
+  const [user, isAuthLoading, error] = useAuthState(auth);
+
+  if(isAuthLoading){return <div>Loading</div>}
+
+  if(user){
+    return(
+      <div className="flex">
+        <Sidebar/>
+        <div className="fixed top-0 right-0 left-22 bottom-0 h-screen">
+          <Routes>
+            <Route path="/home" element={<Home/>}/>
+          </Routes>
         </div>
-      </QueryClientProvider>
-    </BrowserRouter>
-  )
+      </div>
+    )
+  }else{
+    return(
+      <Routes>
+        <Route path="/auth" element={<Auth/>}/>
+      </Routes>
+    )
+  }
 }

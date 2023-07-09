@@ -1,10 +1,6 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyC93C9sYJFtGGjA0X79bIpb3vhg_gleZKg",
   authDomain: "debatetoolv1.firebaseapp.com",
@@ -15,7 +11,25 @@ const firebaseConfig = {
   measurementId: "G-EGVRCJKLY9"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+const auth = getAuth(app);
+
+const provider = new GoogleAuthProvider();
+
+async function handleAuthClick(){
+  const fbu = (await signInWithPopup(auth, provider)).user;
+  return fbu;
+}
+
+async function handleSignOutClick(){
+  return auth.signOut();
+}
+
 export default app;
+
+export {
+  handleAuthClick,
+  handleSignOutClick,
+  auth,
+}

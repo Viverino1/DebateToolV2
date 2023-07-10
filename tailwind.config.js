@@ -8,6 +8,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'quicksand': ['Quicksand', 'sans-serif'],
+      },
       spacing: {
         '17' : '68px',
         '18' : '72px',
@@ -41,8 +44,8 @@ export default {
         },
         text: {
           dark: colors.neutral[500],
-          DEFAULT: colors.neutral[300],
-          light: colors.neutral[100],
+          DEFAULT: colors.neutral[400],
+          light: colors.neutral[300],
         },
       },
       animation: {
@@ -64,7 +67,7 @@ export default {
     },
   },
   plugins: [
-    ({ addUtilities, addComponents }) => {
+    ({ addUtilities }) => {
       addUtilities({
         ".transition": {
           "@apply transition-all duration-300": {}
@@ -77,6 +80,9 @@ export default {
         },
         ".glow-primary" : {
           filter: `drop-shadow(0 0 7px ${colors.red[500]})`,
+        },
+        ".background": {
+          "@apply bg-background/50 rounded border-2 border-background-light": {}
         }
       });
     },

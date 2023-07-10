@@ -1,19 +1,23 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import HomePage from "./pages/home/HomePage";
 import Sidebar from "./components/Sidebar";
 import { auth } from "./utils/firebase/firebase";
 import {useAuthState} from "react-firebase-hooks/auth";
-import Auth from "./pages/auth/AuthPage";
 import CardsPage from "./pages/cards/CardsPage";
 import { getCurrentUser } from "./utils/firebase/firestore/firestore";
 import { useQuery } from "react-query";
 import Loading from "./components/Loading";
+import SettingsPage from "./pages/settings/SettingsPage";
+import AuthPage from "./pages/auth/AuthPage";
+import CasePage from "./pages/case/CasePage";
+import RoundsPage from "./pages/rounds/RoundsPage";
 
 export default function App(){
+  const location = useLocation().pathname;
+
   const [user, isAuthLoading] = useAuthState(auth);
 
   const {isLoading: isCurrentUserLoading, data: currentUser} = useQuery('currentUser', getCurrentUser, {enabled: user? true : false});
-
   if(isAuthLoading || isCurrentUserLoading){return <Loading/>}
 
   if(user && currentUser){
@@ -24,15 +28,19 @@ export default function App(){
           <Routes>
             <Route path="/home" element={<HomePage/>}/>
             <Route path="/cards" element={<CardsPage/>}/>
-            <Route path="/auth" element={<Auth/>}/>
+            <Route path="/case" element={<CasePage/>}/>
+            <Route path="/rounds" element={<RoundsPage/>}/>
+
+            <Route path="/settings" element={<SettingsPage/>}/>
           </Routes>
         </div>
       </div>
     )
   }else{
+    if(location != "/auth"){window.history.replaceState(null, "", "/auth")}
     return(
       <Routes>
-        <Route path="/auth" element={<Auth/>}/>
+        <Route path="/*" element={<AuthPage isLoggedIn={user? true : false} isRegistered={currentUser? true : false}/>}/>
       </Routes>
     )
   }

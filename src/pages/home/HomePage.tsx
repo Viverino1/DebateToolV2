@@ -5,6 +5,6 @@ export default function Home(){
   const {isLoading: isCurrentUserLoading, data: currentUser} = useQuery('currentUser', getCurrentUser);
 
   return(
-    <div>{currentUser?.email}</div>
+    <div>Home Page. Welcome, {currentUser?.email}</div>
   )
 }

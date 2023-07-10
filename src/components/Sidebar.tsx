@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../utils/redux/hooks";
 import { setSide, setTopic } from "../utils/redux/reducers/appSlice";
 import { getTopics } from "../utils/firebase/firestore/firestore";
 import { useQuery } from "react-query";
+import Divider from "./Divider";
 
 export default function Sidebar(){
   const iconSize = 30;
@@ -76,12 +77,6 @@ function Icon(props: {icon: ReactElement, text: string, link: string}){
   )
 }
 
-function Divider(){
-  return(
-    <div className="w-full h-0.5 bg-background-light"></div>
-  )
-}
-
 function Tooltip(props: {text: string}){
   return(
     <span className="absolute bg-background-light/50 backdrop-blur-sm border-2 border-secondary peer-hover:opacity-100 opacity-0 transition px-2 py-1 left-24 rounded scale-0 peer-hover:scale-100 whitespace-nowrap">
@@ -112,7 +107,7 @@ function TopicSelector(){
   const dispatch = useAppDispatch();
   const topic = useAppSelector(state => state.app.topic);
 
-  const {isLoading, error, data: topics} = useQuery('topics', getTopics);
+  const {isLoading, data: topics} = useQuery('topics', getTopics);
 
   return(
     <div className="center">

@@ -11,6 +11,7 @@ import SettingsPage from "./pages/settings/SettingsPage";
 import AuthPage from "./pages/auth/AuthPage";
 import CasePage from "./pages/case/CasePage";
 import RoundsPage from "./pages/rounds/RoundsPage";
+import Redirect from "./pages/404/Redirect";
 
 export default function App(){
   const location = useLocation().pathname;
@@ -32,6 +33,8 @@ export default function App(){
             <Route path="/rounds" element={<RoundsPage/>}/>
 
             <Route path="/settings" element={<SettingsPage/>}/>
+            
+            <Route path="/*" element={<Redirect to="/cards"/>}/>
           </Routes>
         </div>
       </div>
@@ -40,7 +43,7 @@ export default function App(){
     if(location != "/auth"){window.history.replaceState(null, "", "/auth")}
     return(
       <Routes>
-        <Route path="/*" element={<AuthPage isRegistered={currentUser? true : false}/>}/>
+        <Route path="/*" element={<AuthPage/>}/>
       </Routes>
     )
   }

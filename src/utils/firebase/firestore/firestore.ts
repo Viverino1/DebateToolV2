@@ -1,4 +1,4 @@
-import { CollectionReference, DocumentData, collection, doc, getDoc, getFirestore } from "firebase/firestore";
+import { CollectionReference, DocumentData, collection, doc, getDoc, setDoc, getFirestore } from "firebase/firestore";
 import app, { auth } from "../firebase";
 
 const db = getFirestore(app);
@@ -19,11 +19,13 @@ async function getTopics(){
   return topics as string[];
 }
 
+const usersCol = createCollection<User>('users');
+
 async function getCurrentUser(){
   const uid = auth.currentUser?.uid;
 
   if(uid){
-    const user = (await getDoc(doc(db, "users", uid))).data();
+    const user = (await getDoc(doc(usersCol, uid))).data();
     console.log("Current User: ", user);
     return user as User;
   }else{
@@ -31,8 +33,14 @@ async function getCurrentUser(){
   }
 }
 
+async function registerUser(user: User){
+  const docRef = doc(usersCol, user.uid);
+  await setDoc(docRef, user);
+}
+
 export{
   getSchools,
   getTopics,
   getCurrentUser,
+  registerUser
 }

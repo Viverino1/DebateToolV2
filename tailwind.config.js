@@ -79,16 +79,19 @@ export default {
           "@apply rounded-xl": {}
         },
         ".glow-primary" : {
-          filter: `drop-shadow(0 0 7px ${colors.red[500]})`,
+          filter: `drop-shadow(0 0 10px ${colors.red[500]})`,
         },
         ".background": {
           "@apply bg-background/50 rounded border-2 border-background-light outline-none appearance-none": {}
         },
         ".input": {
-          "@apply background text-xl p-2 placeholder:text-text-dark hover:border-secondary transition w-full h-12": {}
+          "@apply background text-xl p-2 placeholder:text-text-dark hover:border-secondary transition w-full h-12 disabled:opacity-50": {}
         },
         ".input-focus": {
           "@apply focus:border-secondary focus:bg-background hover:bg-background": {}
+        },
+        ".button-primary": {
+          "@apply rounded center border-2 !border-primary input !bg-primary/50 hover:!bg-primary glow-primary": {}
         },
       });
     },

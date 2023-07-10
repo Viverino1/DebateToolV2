@@ -6,16 +6,21 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { User as FBU } from "firebase/auth";
 import SchoolSelector from "../../components/UI/selectors/SchoolSelector";
 import SpeakerSelector from "../../components/UI/selectors/SpeakerSelector";
+import { getCurrentUser, registerUser } from "../../utils/firebase/firestore/firestore";
+import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 
-export default function AuthPage(props: {isRegistered: boolean}){
+export default function AuthPage(){
+  const {data: currentUser, refetch: refetchCurrentUser} = useQuery('currentUser', getCurrentUser);
+
   const [fbu, isLoading] = useAuthState(auth);
   if(!fbu){
     return(
       <Login/>
     )
-  }else if(!props.isRegistered){
+  }else if(currentUser? false : true){
     return(
-      <Register fbu={fbu}/>
+      <Register refetchUser={refetchCurrentUser} fbu={fbu}/>
     )
   }
 }
@@ -57,8 +62,10 @@ function Provider(props: {icon: ReactElement, providerName: string, onClick: () 
   )
 }
 
-function Register(props: {fbu: FBU}){
+function Register(props: {fbu: FBU, refetchUser: () => void}){
   const {fbu} = props;
+
+  const navigate = useNavigate();
 
   const [user, setUser] = useState<User>({
     uid: fbu.uid,
@@ -75,11 +82,12 @@ function Register(props: {fbu: FBU}){
   const [registrationStatus, setRegistrationStatus] = useState<"inProgress" | "error" | "loading">("inProgress")
 
   return(
-    <div className="w-full h-full center flex-col space-y-4">
+    <div className="w-full h-full center flex-col space-y-4 text-center">
+      <div className="text-4xl text-text-light">Set up your Debate Tool account.</div>
       <div className="relative">
         <img src={user.photoURL} className="w-32 aspect-square background !rounded-full"/>
-        <div className={`absolute top-0 -z-10 w-32 aspect-square rounded-full blur-3xl animate-pulse
-         ${registrationStatus == "inProgress"? "" : registrationStatus == "loading"? "bg-green-500" : "bg-red-500"}`}></div>
+        <div className={`absolute top-0 -z-10 w-32 aspect-square rounded-full blur-3xl animate-pulse transition
+         ${registrationStatus == "inProgress"? "bg-transparent" : registrationStatus == "loading"? "bg-green-500" : "bg-red-500"}`}></div>
       </div>
 
       <div className="flex items-center flex-col space-y-4 w-1/2 text-text-light">
@@ -89,8 +97,10 @@ function Register(props: {fbu: FBU}){
           className="input input-focus"
           placeholder="First Name" 
           value={user.firstName}
+          disabled={registrationStatus == "loading"}
           onChange={(e) => {
             setUser(u => ({...u, firstName: e.target.value}));
+            setRegistrationStatus("inProgress");
           }}
           />
           
@@ -99,8 +109,10 @@ function Register(props: {fbu: FBU}){
           className="input input-focus"
           placeholder="Last Name" 
           value={user.lastName}
+          disabled={registrationStatus == "loading"}
           onChange={(e) => {
             setUser(u => ({...u, lastName: e.target.value}));
+            setRegistrationStatus("inProgress");
           }}
           />
         </div>
@@ -110,8 +122,10 @@ function Register(props: {fbu: FBU}){
         className="input input-focus"
         placeholder="Email" 
         value={user.email}
+        disabled={registrationStatus == "loading"}
         onChange={(e) => {
           setUser(u => ({...u, email: e.target.value}));
+          setRegistrationStatus("inProgress");
         }}
         />
 
@@ -120,24 +134,49 @@ function Register(props: {fbu: FBU}){
           type="text" 
           className="input input-focus"
           placeholder="Display Name" 
+          disabled={registrationStatus == "loading"}
           value={user.displayName}
           onChange={(e) => {
             setUser(u => ({...u, displayName: e.target.value}));
+            setRegistrationStatus("inProgress");
           }}
           />
 
           <div className="w-48">
-            <SpeakerSelector default={user.speaker} onChange={(e) => {
+            <SpeakerSelector
+            disabled={registrationStatus == "loading"}
+            default={user.speaker} onChange={(e) => {
               setUser(u => ({...u, speaker: e}));
+              setRegistrationStatus("inProgress");
             }}/>
           </div>
         </div>
 
-        <SchoolSelector onChange={(e) => {
+        <SchoolSelector disabled={registrationStatus == "loading"} onChange={(e) => {
           setUser(u => ({...u, school: e}));
+          setRegistrationStatus("inProgress");
         }}/>
         
-        <button className="input !w-48 !bg-primary">Register</button>
+        <button className="button-primary !w-48"
+        disabled={registrationStatus == "loading"}
+        onClick={() => {
+          if(
+            !user.displayName || 
+            !user.firstName || 
+            !user.lastName ||
+            !user.email ||
+            !user.school){
+              setRegistrationStatus("error");
+            }else{
+              setRegistrationStatus("loading");
+              registerUser(user).then(() => {
+                props.refetchUser();
+              })
+            }
+        }}
+        >Register</button>
+
+        <div className="text-xl h-8">{registrationStatus == "inProgress"? "" : registrationStatus == "loading"? "Registering Account..." : "Please fill all fields"}</div>
       </div>
     </div>
   )

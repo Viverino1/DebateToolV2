@@ -23,7 +23,9 @@ async function getCurrentUser(){
   const uid = auth.currentUser?.uid;
 
   if(uid){
-    const user = await getDoc(doc(db, "users", uid));
+    console.log("Getting Current User");
+    const user = (await getDoc(doc(db, "users", uid))).data();
+    console.log(user);
     return user;
   }else{
     return undefined;

@@ -114,8 +114,6 @@ function TopicSelector(){
 
   const {isLoading, error, data: topics} = useQuery('topics', getTopics);
 
-  const loading = true;
-
   return(
     <div className="center">
       <select className={`peer w-full group bg-background hover:bg-background-light border-transparent hover:border-secondary rounded-3xl hover:rounded

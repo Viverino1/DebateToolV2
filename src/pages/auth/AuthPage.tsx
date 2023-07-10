@@ -1,24 +1,23 @@
 import { Google } from "react-bootstrap-icons";
-import { handleAuthClick } from "../../utils/firebase/firebase";
+import { auth, handleAuthClick } from "../../utils/firebase/firebase";
 import Divider from "../../components/Divider";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { User as FBU } from "firebase/auth";
+import SchoolSelector from "../../components/UI/selectors/SchoolSelector";
+import SpeakerSelector from "../../components/UI/selectors/SpeakerSelector";
 
-export default function AuthPage(props: {isLoggedIn: boolean, isRegistered: boolean}){
-  if(!props.isLoggedIn){
+export default function AuthPage(props: {isRegistered: boolean}){
+  const [fbu, isLoading] = useAuthState(auth);
+  if(!fbu){
     return(
       <Login/>
     )
   }else if(!props.isRegistered){
     return(
-      <Register/>
+      <Register fbu={fbu}/>
     )
   }
-}
-
-function Register(){
-  return(
-    <div className="w-full h-full">Register your account</div>
-  )
 }
 
 function Login(){
@@ -55,5 +54,91 @@ function Provider(props: {icon: ReactElement, providerName: string, onClick: () 
       </i>
       <div className="text-2xl">Login with {props.providerName}</div>
     </button>
+  )
+}
+
+function Register(props: {fbu: FBU}){
+  const {fbu} = props;
+
+  const [user, setUser] = useState<User>({
+    uid: fbu.uid,
+    teamID: null,
+    email: fbu.email?? "",
+    photoURL: fbu.photoURL?? "",
+    displayName: fbu.displayName?? "",
+    firstName: "",
+    lastName: "",
+    school: "",
+    speaker: 1,
+  });
+  
+  const [registrationStatus, setRegistrationStatus] = useState<"inProgress" | "error" | "loading">("inProgress")
+
+  return(
+    <div className="w-full h-full center flex-col space-y-4">
+      <div className="relative">
+        <img src={user.photoURL} className="w-32 aspect-square background !rounded-full"/>
+        <div className={`absolute top-0 -z-10 w-32 aspect-square rounded-full blur-3xl animate-pulse
+         ${registrationStatus == "inProgress"? "" : registrationStatus == "loading"? "bg-green-500" : "bg-red-500"}`}></div>
+      </div>
+
+      <div className="flex items-center flex-col space-y-4 w-1/2 text-text-light">
+        <div className="flex space-x-4 w-full">
+          <input 
+          type="text" 
+          className="input input-focus"
+          placeholder="First Name" 
+          value={user.firstName}
+          onChange={(e) => {
+            setUser(u => ({...u, firstName: e.target.value}));
+          }}
+          />
+          
+          <input 
+          type="text" 
+          className="input input-focus"
+          placeholder="Last Name" 
+          value={user.lastName}
+          onChange={(e) => {
+            setUser(u => ({...u, lastName: e.target.value}));
+          }}
+          />
+        </div>
+
+        <input 
+        type="text" 
+        className="input input-focus"
+        placeholder="Email" 
+        value={user.email}
+        onChange={(e) => {
+          setUser(u => ({...u, email: e.target.value}));
+        }}
+        />
+
+        <div className="flex space-x-4 w-full">
+          <input 
+          type="text" 
+          className="input input-focus"
+          placeholder="Display Name" 
+          value={user.displayName}
+          onChange={(e) => {
+            setUser(u => ({...u, displayName: e.target.value}));
+          }}
+          />
+
+          <div className="w-48">
+            <SpeakerSelector default={user.speaker} onChange={(e) => {
+              setUser(u => ({...u, speaker: e}));
+            }}/>
+          </div>
+        </div>
+
+        <SchoolSelector onChange={(e) => {
+          setUser(u => ({...u, school: e}));
+        }}/>
+        
+        <button className="input !w-48 !bg-primary">Register</button>
+      </div>
+    </div>
   )
 }

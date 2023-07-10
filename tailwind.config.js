@@ -82,8 +82,14 @@ export default {
           filter: `drop-shadow(0 0 7px ${colors.red[500]})`,
         },
         ".background": {
-          "@apply bg-background/50 rounded border-2 border-background-light": {}
-        }
+          "@apply bg-background/50 rounded border-2 border-background-light outline-none appearance-none": {}
+        },
+        ".input": {
+          "@apply background text-xl p-2 placeholder:text-text-dark hover:border-secondary transition w-full h-12": {}
+        },
+        ".input-focus": {
+          "@apply focus:border-secondary focus:bg-background hover:bg-background": {}
+        },
       });
     },
   ],

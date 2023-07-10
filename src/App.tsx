@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import HomePage from "./pages/home/HomePage";
 import Sidebar from "./components/Sidebar";
 import { auth } from "./utils/firebase/firebase";
@@ -40,7 +40,7 @@ export default function App(){
     if(location != "/auth"){window.history.replaceState(null, "", "/auth")}
     return(
       <Routes>
-        <Route path="/*" element={<AuthPage isLoggedIn={user? true : false} isRegistered={currentUser? true : false}/>}/>
+        <Route path="/*" element={<AuthPage isRegistered={currentUser? true : false}/>}/>
       </Routes>
     )
   }

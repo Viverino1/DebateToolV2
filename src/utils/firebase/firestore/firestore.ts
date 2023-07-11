@@ -1,5 +1,7 @@
 import { CollectionReference, DocumentData, collection, doc, getDoc, setDoc, getFirestore } from "firebase/firestore";
 import app, { auth } from "../firebase";
+import store from "../../redux/store";
+import { setTopic } from "../../redux/reducers/appSlice";
 
 const db = getFirestore(app);
 
@@ -14,9 +16,10 @@ async function getSchools(){
 }
 
 async function getTopics(){
-  const topics = ((await getDoc(doc(db, "public", "static"))).data() as any).topics;
+  const topics = ((await getDoc(doc(db, "public", "static"))).data() as any).topics as string[];
   console.log("Topics: ", topics);
-  return topics as string[];
+  store.dispatch(setTopic(topics[topics.length - 1]));
+  return topics;
 }
 
 const usersCol = createCollection<User>('users');
@@ -44,3 +47,5 @@ export{
   getCurrentUser,
   registerUser
 }
+
+export default db;

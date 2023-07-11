@@ -4,8 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../utils/redux/hooks";
 import { setSide, setTopic } from "../utils/redux/reducers/appSlice";
 import { getTopics } from "../utils/firebase/firestore/firestore";
-import { useQuery } from "react-query";
+import { QueryClient, useQuery } from "react-query";
 import Divider from "./Divider";
+import { queryClient } from "../main";
 
 export default function Sidebar(){
   const iconSize = 30;
@@ -93,7 +94,10 @@ function SideSelector(){
     <div className="center">
       <select className="peer w-full group bg-background hover:bg-background-light border-transparent hover:border-secondary rounded-3xl hover:rounded
       border-2 h-10 transition outline-none text-center appearance-none"
-      onChange={(e) => dispatch(setSide(e.target.value as Side))}
+      onChange={(e) => {
+        dispatch(setSide(e.target.value as Side));
+        queryClient.refetchQueries({queryKey: "cards", exact: true});
+      }}
       value={side}>
         <option value="AFF">AFF</option>
         <option value="NEG">NEG</option>
@@ -113,7 +117,10 @@ function TopicSelector(){
     <div className="center">
       <select className={`peer w-full group bg-background hover:bg-background-light border-transparent hover:border-secondary rounded-3xl hover:rounded
       border-2 h-10 transition outline-none text-center appearance-none ${isLoading? "border-x-background-light rounded animate-pulse" : ""}`}
-      onChange={(e) => dispatch(setTopic(e.target.value))}
+      onChange={(e) => {
+        dispatch(setTopic(e.target.value));
+        queryClient.refetchQueries({queryKey: "cards", exact: true});
+      }}
       disabled={isLoading}
       value={topic}>
         {topics?.map((t) => (

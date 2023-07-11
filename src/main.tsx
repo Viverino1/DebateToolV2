@@ -20,12 +20,12 @@ const queryClient = new QueryClient({
 });
 
 queryClient.prefetchQuery({
-  queryKey: ['topics'],
+  queryKey: 'topics',
   queryFn: getTopics,
 });
 
 queryClient.prefetchQuery({
-  queryKey: ['schools'],
+  queryKey: 'schools',
   queryFn: getSchools,
 });
 
@@ -40,3 +40,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </Provider>
   </React.StrictMode>,
 )
+
+export{ queryClient }

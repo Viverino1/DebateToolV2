@@ -12,6 +12,8 @@ import AuthPage from "./pages/auth/AuthPage";
 import CasePage from "./pages/case/CasePage";
 import RoundsPage from "./pages/rounds/RoundsPage";
 import Redirect from "./pages/404/Redirect";
+import { queryClient } from "./main";
+import { getCards } from "./utils/firebase/firestore/cards.firestore";
 
 export default function App(){
   const location = useLocation().pathname;
@@ -19,7 +21,9 @@ export default function App(){
   const [user, isAuthLoading] = useAuthState(auth);
 
   const {isLoading: isCurrentUserLoading, data: currentUser} = useQuery('currentUser', getCurrentUser, {enabled: user? true : false});
-  if(isAuthLoading || isCurrentUserLoading){return <Loading/>}
+  const {isLoading: isCardsLoading} = useQuery('cards', getCards, {enabled: user && currentUser? true : false});
+
+  if(isAuthLoading || isCurrentUserLoading || isCardsLoading){return <Loading/>}
 
   if(user && currentUser){
     return(

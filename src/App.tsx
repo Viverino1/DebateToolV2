@@ -34,7 +34,7 @@ export default function App(){
             <Route path="/cards">
               <Route index element={<CardsPage/>}/>
               {Object.keys(cards as object).map(cardID => (
-                <Route path={cardID} element={<div>{cardID}</div>}/>
+                <Route key={cardID} path={cardID} element={<div>{cardID}</div>}/>
               ))}
             </Route>
             <Route path="/case" element={<CasePage/>}/>

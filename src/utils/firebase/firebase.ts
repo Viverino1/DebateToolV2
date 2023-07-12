@@ -19,6 +19,7 @@ const provider = new GoogleAuthProvider();
 
 async function handleAuthClick(){
   const fbu = (await signInWithPopup(auth, provider)).user;
+  
   return fbu;
 }
 

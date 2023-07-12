@@ -19,11 +19,7 @@ select:-webkit-autofill:focus {
 }
 
 ::-webkit-scrollbar {
-  @apply w-2
-}
-
-::-webkit-scrollbar-track {
-  /* Customize the scrollbar track */
+  @apply w-2 h-2 
 }
 
 ::-webkit-scrollbar-thumb {

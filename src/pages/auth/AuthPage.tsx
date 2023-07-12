@@ -13,10 +13,10 @@ import { useNavigate } from "react-router-dom";
 export default function AuthPage(){
   const {data: currentUser, refetch: refetchCurrentUser} = useQuery('currentUser', getCurrentUser);
 
-  const [fbu, isLoading] = useAuthState(auth);
+  const [fbu] = useAuthState(auth);
   if(!fbu){
     return(
-      <Login/>
+      <Login refetchUser={refetchCurrentUser}/>
     )
   }else if(currentUser? false : true){
     return(
@@ -25,7 +25,7 @@ export default function AuthPage(){
   }
 }
 
-function Login(){
+function Login(props: { refetchUser: () => void}){
   return(
     <div className="flex w-full h-screen">
       <div className="relative w-2/3 h-full center flex-col p-8 bg-background overflow-clip">
@@ -42,7 +42,7 @@ function Login(){
             <div className="text-xl">New here? Click below to sign up!</div>
           </div>
           <Divider/>
-          <Provider icon={<Google size={30}/>} providerName="Google" onClick={handleAuthClick}/>
+          <Provider icon={<Google size={30}/>} providerName="Google" onClick={() => {handleAuthClick().then(() => {props.refetchUser()})}}/>
         </div>
       </div>
     </div>

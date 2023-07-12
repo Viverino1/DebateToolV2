@@ -70,7 +70,7 @@ function Icon(props: {icon: ReactElement, text: string, link: string}){
       onClick={() => {
         navigate(link);
       }}
-      className={`peer w-full aspect-square center rounded-[32px] border-2 transition border-transparent ${isActive? "bg-primary rounded glow-primary" : "hover:rounded hover:border-secondary hover:bg-background-light"}`}>
+      className={`outline-none peer w-full aspect-square center rounded-[32px] border-2 transition border-transparent ${isActive? "bg-primary rounded glow-primary" : "hover:rounded hover:border-secondary hover:bg-background-light"}`}>
         {icon}
       </button>
       <Tooltip text={text}/>

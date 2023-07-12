@@ -51,26 +51,25 @@ async function getCards(){
     }
   });
 
-  console.log("Cards: ", cards);
+  console.log("%cCards: ", 'color: green;', cards);
 
   return cards;
 }
 
-async function getCard(id: string){
-  console.log("Getting Card: ", id);
-  const {side, topic} = store.getState().app;
-  const docRef = doc(db, "cards", topic, side, id);
-  const card = (await getDoc(docRef)).data() as Card;
-  switch(card.type){
-    case "evidence": return card as Evidence;
-    case "rebuttal": return card as Rebuttal;
-    case "quote": return card as Quote;
-    case "statistic": return card as Statistic;
-  }
-}
+// async function getCard(id: string){
+//   console.log("Getting Card: ", id);
+//   const {side, topic} = store.getState().app;
+//   const docRef = doc(db, "cards", topic, side, id);
+//   const card = (await getDoc(docRef)).data() as Card;
+//   switch(card.type){
+//     case "evidence": return card as Evidence;
+//     case "rebuttal": return card as Rebuttal;
+//     case "quote": return card as Quote;
+//     case "statistic": return card as Statistic;
+//   }
+// }
 
 export{
   saveCard,
-  getCard,
   getCards,
 }

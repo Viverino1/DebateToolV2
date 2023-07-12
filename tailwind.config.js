@@ -39,6 +39,9 @@ export default {
         primary: {
           DEFAULT: colors.red[500],
         },
+        evidence: {
+          DEFAULT: colors.indigo[500],
+        },
         secondary: {
           DEFAULT: colors.neutral[500],
         },
@@ -46,6 +49,7 @@ export default {
           dark: colors.neutral[500],
           DEFAULT: colors.neutral[400],
           light: colors.neutral[300],
+          extraLight: colors.neutral[100],
         },
       },
       animation: {
@@ -82,7 +86,10 @@ export default {
           filter: `drop-shadow(0 0 10px ${colors.red[500]})`,
         },
         ".background": {
-          "@apply bg-background/50 rounded border-2 border-background-light outline-none appearance-none": {}
+          "@apply bg-background/50 rounded border-2 border-background-light outline-none appearance-none backdrop-blur-sm": {}
+        },
+        ".background-light": {
+          "@apply bg-background-light/50 rounded border-2 border-secondary outline-none appearance-none backdrop-blur-sm": {}
         },
         ".input": {
           "@apply background text-xl p-2 placeholder:text-text-dark hover:border-secondary transition w-full h-12 disabled:opacity-50": {}

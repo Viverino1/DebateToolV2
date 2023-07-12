@@ -11,13 +11,13 @@ const createCollection = <T = DocumentData>(collectionName: string) => {
 
 async function getSchools(){
   const schools = ((await getDoc(doc(db, "public", "static"))).data() as any).schools;
-  console.log("Schools: ", schools);
+  console.log("%cSchools: ", 'color: green;', schools);
   return schools as School[];
 }
 
 async function getTopics(){
   const topics = ((await getDoc(doc(db, "public", "static"))).data() as any).topics as string[];
-  console.log("Topics: ", topics);
+  console.log("%cTopics: ", 'color: green;', topics);
   store.dispatch(setTopic(topics[topics.length - 1]));
   return topics;
 }
@@ -29,7 +29,7 @@ async function getCurrentUser(){
 
   if(uid){
     const user = (await getDoc(doc(usersCol, uid))).data();
-    console.log("Current User: ", user);
+    console.log("%cCurrent User: ", 'color: green;', user);
     return user as User;
   }else{
     return undefined;

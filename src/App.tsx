@@ -12,7 +12,6 @@ import AuthPage from "./pages/auth/AuthPage";
 import CasePage from "./pages/case/CasePage";
 import RoundsPage from "./pages/rounds/RoundsPage";
 import Redirect from "./pages/404/Redirect";
-import { queryClient } from "./main";
 import { getCards } from "./utils/firebase/firestore/cards.firestore";
 
 export default function App(){

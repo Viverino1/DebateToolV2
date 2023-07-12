@@ -34,16 +34,19 @@ type Card = {
   data: string,
 }
 
+type Contention = number | "intro" | "conclusion" | null;
+type Subpoint = number | null;
+
 type Evidence = Card & {
   type: "evidence",
-  contention: number,
-  subpoint: number,
+  contention: Contention,
+  subpoint: Subpoint,
 }
 
 type Quote = Card & {
   type: "quote",
-  contention: number,
-  subpoint: number,
+  contention: Contention,
+  subpoint: Subpoint,
   quotee: string,
 }
 
@@ -55,8 +58,8 @@ type Rebuttal = Card & {
 
 type Statistic = Card & {
   type: "statistic",
-  contention: number,
-  subpoint: number,
+  contention: Contention,
+  subpoint: Subpoint,
 }
 
 type AnyCard = Evidence | Rebuttal | Quote | Statistic

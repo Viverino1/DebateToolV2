@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { capitalize } from "../../utils/helpers";
+import { capitalize, colorFromType } from "../../utils/helpers";
 import { ArrowsAngleExpand, StarFill } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 
@@ -13,15 +13,17 @@ export default function CardTemplate(props: {children: ReactNode, card: AnyCard,
     cardID
   } = card;
 
+  const color = colorFromType(type);
+
   return(
     <div className="relative full rounded overflow-clip">
       <div className="absolute z-0 full overflow-clip">
-        <div className={`half rounded-full -translate-x-1/2 -translate-y-1/2 bg-${type}`}></div>
+        <div className={`half rounded-full -translate-x-1/2 -translate-y-1/2 ${color}`}></div>
       </div>
       <div className="relative background full z-10 !backdrop-blur-3xl text-text-extraLight">
         <div className="absolute top-0 left-0 right-0 flex h-12">
           <div className="w-full h-full flex space-x-2 items-center px-2 overflow-auto">
-            <Tag color={type} text={capitalize(type)}/>
+            <Tag color={color} text={capitalize(type)}/>
             <Tag text={isPublic? "Public": "Private"}/>
           </div>
           <div className="h-full flex p-2 space-x-2 items-center">
@@ -38,7 +40,7 @@ export default function CardTemplate(props: {children: ReactNode, card: AnyCard,
 function Tag(props: {color?: string, text: string}){
   return(
     <div>
-      <div className={`py-1 px-2 text-sm w-fit h-fit rounded select-none ${props.color? `bg-${props.color}` : "background-light"}`}>{props.text}</div>
+      <div className={`py-1 px-2 text-sm w-fit h-fit rounded select-none ${props.color? props.color : "background-light"}`}>{props.text}</div>
     </div>
   )
 }

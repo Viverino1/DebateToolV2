@@ -40,7 +40,10 @@ export default {
           DEFAULT: colors.red[500],
         },
         evidence: {
-          DEFAULT: colors.indigo[500],
+          DEFAULT: colors.amber[500],
+        },
+        rebuttal: {
+          DEFAULT: colors.emerald[500],
         },
         secondary: {
           DEFAULT: colors.neutral[500],

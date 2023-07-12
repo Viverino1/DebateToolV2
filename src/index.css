@@ -17,3 +17,15 @@ select:-webkit-autofill:focus {
   -webkit-text-fill-color: white;
   transition: background-color 5000s ease-in-out 0s;
 }
+
+::-webkit-scrollbar {
+  @apply w-4 bg-background-light
+}
+
+::-webkit-scrollbar-track {
+  /* Customize the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+  /* Customize the scrollbar thumb */
+}

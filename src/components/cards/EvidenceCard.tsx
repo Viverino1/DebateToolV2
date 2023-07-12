@@ -9,6 +9,8 @@ export default function EvidenceCard(props: {card: Evidence}){
     title,
     warrant,
     data,
+    sourceLink,
+    sourceName
   } = props.card;
 
   const contentionSubpointString = contsub(contention, subpoint);
@@ -32,6 +34,8 @@ export default function EvidenceCard(props: {card: Evidence}){
         </div>
         <div className="w-full h-full">
           <h1 className="text-xl text-text-light">{title}</h1>
+          <a href={sourceLink} className="text-evidence underline text-md">{sourceName}</a>
+          <p className="text-md h-full overflow-auto mt-2">{data.repeat(75)}</p>
         </div>
       </div>
     </div>

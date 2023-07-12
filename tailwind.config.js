@@ -89,7 +89,7 @@ export default {
           "@apply bg-background/50 rounded border-2 border-background-light outline-none appearance-none backdrop-blur-sm": {}
         },
         ".background-light": {
-          "@apply bg-background-light/50 rounded border-2 border-secondary outline-none appearance-none backdrop-blur-sm": {}
+          "@apply bg-background-light/50 rounded border-2 border-secondary outline-none appearance-none backdrop-blur-3xl": {}
         },
         ".input": {
           "@apply background text-xl p-2 placeholder:text-text-dark hover:border-secondary transition w-full h-12 disabled:opacity-50": {}
@@ -99,6 +99,12 @@ export default {
         },
         ".button-primary": {
           "@apply rounded center border-2 !border-primary input !bg-primary/50 hover:!bg-primary glow-primary": {}
+        },
+        ".full": {
+          "@apply w-full h-full": {}
+        },
+        ".half": {
+          "@apply w-1/2 h-1/2": {}
         },
       });
     },

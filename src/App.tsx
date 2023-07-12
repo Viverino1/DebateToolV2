@@ -20,7 +20,7 @@ export default function App(){
   const [user, isAuthLoading] = useAuthState(auth);
 
   const {isLoading: isCurrentUserLoading, data: currentUser} = useQuery('currentUser', getCurrentUser, {enabled: user? true : false});
-  const {isLoading: isCardsLoading} = useQuery('cards', getCards, {enabled: user && currentUser? true : false});
+  const {isLoading: isCardsLoading, data: cards} = useQuery('cards', getCards, {enabled: user && currentUser? true : false});
 
   if(isAuthLoading || isCurrentUserLoading || isCardsLoading){return <Loading/>}
 
@@ -31,7 +31,12 @@ export default function App(){
         <div className="fixed top-0 right-0 left-22 bottom-0 h-screen">
           <Routes>
             <Route path="/home" element={<HomePage/>}/>
-            <Route path="/cards" element={<CardsPage/>}/>
+            <Route path="/cards">
+              <Route index element={<CardsPage/>}/>
+              {Object.keys(cards as object).map(cardID => (
+                <Route path={cardID} element={<div>{cardID}</div>}/>
+              ))}
+            </Route>
             <Route path="/case" element={<CasePage/>}/>
             <Route path="/rounds" element={<RoundsPage/>}/>
 

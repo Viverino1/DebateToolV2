@@ -19,7 +19,7 @@ select:-webkit-autofill:focus {
 }
 
 ::-webkit-scrollbar {
-  @apply w-4 bg-background-light
+  @apply w-2
 }
 
 ::-webkit-scrollbar-track {
@@ -27,5 +27,5 @@ select:-webkit-autofill:focus {
 }
 
 ::-webkit-scrollbar-thumb {
-  /* Customize the scrollbar thumb */
+  @apply bg-background-light rounded-full
 }

@@ -4,8 +4,8 @@ function contsub(c: Contention, s: Subpoint){
     case "intro": return "Intro"
     case "conclusion": return "Conclusion"
     default: switch(s){
-      case null: return `C${c}`
-      default: return `C${c}, S${s}`
+      case null: return `Contention ${c}`
+      default: return `Contention ${c} Subpoint ${s}`
     }
   }
 }

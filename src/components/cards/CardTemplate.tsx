@@ -10,7 +10,10 @@ export default function CardTemplate(props: {children: ReactNode, card: AnyCard,
 
   const {
     isPublic,
-    cardID
+    cardID,
+    title,
+    sourceName,
+    sourceLink,
   } = card;
 
   const color = colorFromType(type);
@@ -18,12 +21,12 @@ export default function CardTemplate(props: {children: ReactNode, card: AnyCard,
   return(
     <div className="relative full rounded overflow-clip">
       <div className="absolute z-0 full overflow-clip">
-        <div className={`half rounded-full -translate-x-1/2 -translate-y-1/2 ${color}`}></div>
+        <div className={`half rounded-full -translate-x-1/2 -translate-y-1/2 ${color.bg}`}></div>
       </div>
       <div className="relative background full z-10 !backdrop-blur-3xl text-text-extraLight">
         <div className="absolute top-0 left-0 right-0 flex h-12">
           <div className="w-full h-full flex space-x-2 items-center px-2 overflow-auto">
-            <Tag color={color} text={capitalize(type)}/>
+            <Tag color={color.bg} text={capitalize(type)}/>
             <Tag text={isPublic? "Public": "Private"}/>
           </div>
           <div className="h-full flex p-2 space-x-2 items-center">
@@ -31,7 +34,11 @@ export default function CardTemplate(props: {children: ReactNode, card: AnyCard,
             <button onClick={() => navigate(cardID)} className="h-full aspect-square center !rounded-full background-light"><ArrowsAngleExpand size={15}/></button>
           </div>
         </div>
-        <div className="absolute top-12 left-0 right-0 bottom-0 px-2 pb-2">{children}</div>
+        <div className="absolute top-12 left-0 right-0 bottom-0 px-2 pb-2 flex flex-col">
+          <div className="text-xl line-clamp-2 break-words">{title}</div>
+          <a href={sourceLink} className={`text-md underline ${color.text}`}>{sourceName}</a>
+          {children}
+        </div>
       </div>
     </div>
   )
@@ -39,8 +46,6 @@ export default function CardTemplate(props: {children: ReactNode, card: AnyCard,
 
 function Tag(props: {color?: string, text: string}){
   return(
-    <div>
-      <div className={`py-1 px-2 text-sm w-fit h-fit rounded select-none ${props.color? props.color : "background-light"}`}>{props.text}</div>
-    </div>
+    <div className={`py-1 px-2 text-sm w-fit h-fit rounded select-none ${props.color? props.color : "background-light"}`}>{props.text}</div>
   )
 }

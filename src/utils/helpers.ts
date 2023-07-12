@@ -16,11 +16,11 @@ function capitalize(text: string){
 
 function colorFromType(type: string){
   switch(type){
-    case "evidence": return "bg-evidence";
-    case "rebuttal": return "bg-rebuttal";
-    case "quote": return "bg-quote";
-    case "statistic": return "bg-statistic";
-    default: return "bg-primary"
+    case "evidence": return {bg: "bg-evidence", text: "text-evidence"};
+    case "rebuttal": return {bg: "bg-rebuttal", text: "text-rebuttal"};
+    case "quote": return {bg: "bg-quote", text: "text-quote"};
+    case "statistic": return {bg: "bg-statistic", text: "text-statistic"};
+    default: return {bg: "bg-primary", text: "text-primary"}
   }
 }
 

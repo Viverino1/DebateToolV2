@@ -11,7 +11,7 @@ import { queryClient } from "../main";
 export default function Sidebar(){
   const iconSize = 30;
   return(
-    <div className="fixed top-0 left-0 bottom-0 z-50 w-22 h-screen p-4 bg-background text-text-light flex flex-col justify-between">
+    <div className="fixed top-0 left-0 bottom-0 z-50 w-22 h-full p-4 bg-background text-text-light flex flex-col justify-between">
       <div className="flex flex-col space-y-4">
         <Icon 
         icon={<img src="/DebateToolLogo.svg" className="w-12"/>}

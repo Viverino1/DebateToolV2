@@ -1,7 +1,29 @@
-const colors = require('tailwindcss/colors')
+const colors = require('tailwindcss/colors');
+
+const glowAmount = 7;
+
+const cardColorsValue = 600;
+
+const customColors = {
+  primary: {
+    DEFAULT: colors.red[500],
+  },
+  evidence: {
+    DEFAULT: colors.amber[cardColorsValue],
+  },
+  rebuttal: {
+    DEFAULT: colors.green[cardColorsValue],
+  },
+  quote: {
+    DEFAULT: colors.cyan[cardColorsValue],
+  },
+  statistic: {
+    DEFAULT: colors.violet[cardColorsValue],
+  },
+}
 
 /** @type {import('tailwindcss').Config} */
-export default {
+export default{
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -36,22 +58,16 @@ export default {
           DEFAULT: colors.neutral[800],
           light: colors.neutral[700],
         },
-        primary: {
-          DEFAULT: colors.red[500],
-        },
-        evidence: {
-          DEFAULT: colors.amber[500],
-        },
-        rebuttal: {
-          DEFAULT: colors.emerald[500],
-        },
+
+        ...customColors,
+        
         secondary: {
           DEFAULT: colors.neutral[500],
         },
         text: {
           dark: colors.neutral[500],
           DEFAULT: colors.neutral[400],
-          light: colors.neutral[300],
+          light: colors.neutral[200],
           extraLight: colors.neutral[100],
         },
       },
@@ -85,9 +101,23 @@ export default {
         ".rounded": {
           "@apply rounded-xl": {}
         },
+
         ".glow-primary" : {
-          filter: `drop-shadow(0 0 10px ${colors.red[500]})`,
+          filter: `drop-shadow(0 0 ${glowAmount}px ${customColors.primary.DEFAULT})`,
         },
+        ".glow-evidence" : {
+          filter: `drop-shadow(0 0 ${glowAmount}px ${customColors.evidence.DEFAULT})`,
+        },
+        ".glow-rebuttal" : {
+          filter: `drop-shadow(0 0 ${glowAmount}px ${customColors.rebuttal.DEFAULT})`,
+        },
+        ".glow-quote" : {
+          filter: `drop-shadow(0 0 ${glowAmount}px ${customColors.quote.DEFAULT})`,
+        },
+        ".glow-statistic" : {
+          filter: `drop-shadow(0 0 ${glowAmount}px ${customColors.statistic.DEFAULT})`,
+        },
+
         ".background": {
           "@apply bg-background/50 rounded border-2 border-background-light outline-none appearance-none backdrop-blur-sm": {}
         },
@@ -100,9 +130,23 @@ export default {
         ".input-focus": {
           "@apply focus:border-secondary focus:bg-background hover:bg-background": {}
         },
+
         ".button-primary": {
-          "@apply rounded center border-2 !border-primary input !bg-primary/50 hover:!bg-primary glow-primary": {}
+          "@apply rounded center !bg-primary input glow-primary !border-transparent hover:!border-text-light": {}
         },
+        ".button-evidence": {
+          "@apply rounded center !bg-evidence input glow-evidence !border-transparent hover:!border-text-light": {}
+        },
+        ".button-rebuttal": {
+          "@apply rounded center !bg-rebuttal input glow-rebuttal !border-transparent hover:!border-text-light": {}
+        },
+        ".button-quote": {
+          "@apply rounded center !bg-quote input glow-quote !border-transparent hover:!border-text-light": {}
+        },
+        ".button-statistic": {
+          "@apply rounded center !bg-statistic input glow-statistic !border-transparent hover:!border-text-light": {}
+        },
+
         ".full": {
           "@apply w-full h-full": {}
         },
@@ -113,4 +157,3 @@ export default {
     },
   ],
 }
-

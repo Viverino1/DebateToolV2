@@ -13,6 +13,11 @@ import CasePage from "./pages/case/CasePage";
 import RoundsPage from "./pages/rounds/RoundsPage";
 import Redirect from "./pages/404/Redirect";
 import { getCards } from "./utils/firebase/firestore/cards.firestore";
+import CreatePage from "./pages/cards/create/CreatePage";
+import CreateEvidencePage from "./pages/cards/create/evidence/CreateEvidencePage";
+import CreateRebuttalPage from "./pages/cards/create/rebuttal/CreateRebuttalPage";
+import CreateQuotePage from "./pages/cards/create/quote/CreateQuotePage";
+import CreateStatisticPage from "./pages/cards/create/statistic/CreateStatisticPage";
 
 export default function App(){
   const location = useLocation().pathname;
@@ -28,7 +33,7 @@ export default function App(){
     return(
       <div className="flex">
         <Sidebar/>
-        <div className="fixed top-0 right-0 left-22 bottom-0 h-screen">
+        <div className="fixed top-0 right-0 left-22 bottom-0 h-full">
           <Routes>
             <Route path="/home" element={<HomePage/>}/>
             <Route path="/cards">
@@ -36,6 +41,13 @@ export default function App(){
               {Object.keys(cards as object).map(cardID => (
                 <Route key={cardID} path={cardID} element={<div>{cardID}</div>}/>
               ))}
+              <Route path="create">
+                <Route index element={<CreatePage/>}/>
+                <Route path="evidence" element={<CreateEvidencePage/>}/>
+                <Route path="rebuttal" element={<CreateRebuttalPage/>}/>
+                <Route path="quote" element={<CreateQuotePage/>}/>
+                <Route path="statistic" element={<CreateStatisticPage/>}/>
+              </Route>
             </Route>
             <Route path="/case" element={<CasePage/>}/>
             <Route path="/rounds" element={<RoundsPage/>}/>

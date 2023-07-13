@@ -62,4 +62,4 @@ type Statistic = Card & {
   subpoint: Subpoint,
 }
 
-type AnyCard = Evidence | Rebuttal | Quote | Statistic
+type AnyCard = (Evidence | Rebuttal | Quote | Statistic) & {contention: Contention, subpoint: Subpoint};

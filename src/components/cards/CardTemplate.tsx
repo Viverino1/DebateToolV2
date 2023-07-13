@@ -3,17 +3,19 @@ import { capitalize, colorFromType } from "../../utils/helpers";
 import { ArrowsAngleExpand, StarFill } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 
-export default function CardTemplate(props: {children: ReactNode, card: AnyCard, type: string}){
+export default function CardTemplate(props: {children: ReactNode, card: AnyCard}){
   const navigate = useNavigate();
 
-  const {type, card, children} = props;
+  const {card, children} = props;
 
   const {
+    type,
     isPublic,
     cardID,
     title,
     sourceName,
     sourceLink,
+    contention,
   } = card;
 
   const color = colorFromType(type);
@@ -34,9 +36,12 @@ export default function CardTemplate(props: {children: ReactNode, card: AnyCard,
             <button onClick={() => navigate(cardID)} className="h-full aspect-square center !rounded-full background-light"><ArrowsAngleExpand size={15}/></button>
           </div>
         </div>
-        <div className="absolute top-12 left-0 right-0 bottom-0 px-2 pb-2 flex flex-col">
-          <div className="text-xl line-clamp-2 break-words">{title}</div>
-          <a href={sourceLink} className={`text-md underline ${color.text}`}>{sourceName}</a>
+        <div className="absolute top-12 left-0 right-0 bottom-0 px-2 pb-2 flex flex-col text-text text-md">
+          <div className="text-text-light">
+            <div className="text-xl line-clamp-2 break-words">{title}</div>
+            <a href={sourceLink} className={`text-md underline ${color.text}`}>{sourceName}</a>
+          </div>
+          <div className="h-0.5 bg-secondary mt-2 mb-1 w-full"/>
           {children}
         </div>
       </div>

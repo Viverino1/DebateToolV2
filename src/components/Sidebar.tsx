@@ -4,9 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../utils/redux/hooks";
 import { setSide, setTopic } from "../utils/redux/reducers/appSlice";
 import { getTopics } from "../utils/firebase/firestore/firestore";
-import { QueryClient, useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import Divider from "./Divider";
-import { queryClient } from "../main";
 
 export default function Sidebar(){
   const iconSize = 30;
@@ -87,6 +86,7 @@ function Tooltip(props: {text: string}){
 }
 
 function SideSelector(){
+  const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
   const side = useAppSelector(state => state.app.side);
 
@@ -108,6 +108,7 @@ function SideSelector(){
 }
 
 function TopicSelector(){
+  const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
   const topic = useAppSelector(state => state.app.topic);
 

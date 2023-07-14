@@ -1,4 +1,4 @@
-import { CollectionReference, DocumentData, collection, doc, getDoc, setDoc, getFirestore } from "firebase/firestore";
+import { CollectionReference, DocumentData, collection, doc, getDoc, setDoc, getFirestore, query, where, getDocs } from "firebase/firestore";
 import app, { auth } from "../firebase";
 import store from "../../redux/store";
 import { setTopic } from "../../redux/reducers/appSlice";
@@ -36,16 +36,24 @@ async function getCurrentUser(){
   }
 }
 
-async function registerUser(user: User){
+async function saveUser(user: User){
   const docRef = doc(usersCol, user.uid);
-  await setDoc(docRef, user);
+  await setDoc(docRef, user, {merge: true});
+}
+
+async function getUserByEmail(email: string){
+  const q = query(usersCol, where("email", "==", email));
+  const user = (await getDocs(q)).docs[0]?.data() as User;
+  console.log(`${email}'s Data:`, user);
+  return user as User | undefined;
 }
 
 export{
   getSchools,
   getTopics,
   getCurrentUser,
-  registerUser
+  saveUser,
+  getUserByEmail,
 }
 
 export default db;

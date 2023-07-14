@@ -6,7 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { User as FBU } from "firebase/auth";
 import SchoolSelector from "../../components/UI/selectors/SchoolSelector";
 import SpeakerSelector from "../../components/UI/selectors/SpeakerSelector";
-import { getCurrentUser, registerUser } from "../../utils/firebase/firestore/firestore";
+import { getCurrentUser, saveUser } from "../../utils/firebase/firestore/firestore";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -169,7 +169,7 @@ function Register(props: {fbu: FBU, refetchUser: () => void}){
               setRegistrationStatus("error");
             }else{
               setRegistrationStatus("loading");
-              registerUser(user).then(() => {
+              saveUser(user).then(() => {
                 props.refetchUser();
               })
             }

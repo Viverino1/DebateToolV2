@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { queryClient } from "../../../main";
 import { contsub } from "../../../utils/helpers";
+import { useQueryClient } from "react-query";
 
 export default function ContSubSelector(props: {onChange: (contSub: ContSub) => void, default?: ContSub}){
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const user = queryClient.getQueryData('currentUser') as User;
 
   const [contSub, setContSub] = useState<ContSub>(props.default?? {contention: null, subpoint: null});
@@ -15,7 +16,7 @@ export default function ContSubSelector(props: {onChange: (contSub: ContSub) => 
   
   return(
     <div className="relative center">
-      <button onClick={() => navigate("/settings")} hidden={!!user.teamID} className="absolute z-10 text-xl underline">Create a team to configure contentions.</button>
+      <button onClick={() => navigate("/settings")} hidden={!!user.teamID} className="absolute z-10 text-xl underline">Create or join a team to configure contentions.</button>
       <div className={`flex space-x-4 w-full ${!user.teamID? "opacity-70": "opacity-100"}`}>
         <select 
         disabled={!user.teamID} 

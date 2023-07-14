@@ -4,9 +4,12 @@ export default function SpeakerSelector(props: {onChange: (speaker: Speaker) => 
   const [speaker, setSpeaker] = useState<Speaker>(props.default as Speaker);
 
   return(
-    <button disabled={props.disabled} className="input" onClick={() => {
+    <button 
+    disabled={props.disabled} 
+    className="input" 
+    onClick={() => {
       setSpeaker(prev => (prev == 1? 2 : 1));
-      props.onChange(speaker);
+      props.onChange(speaker == 1? 2 : 1);
     }}>
       Speaker {speaker}
     </button>

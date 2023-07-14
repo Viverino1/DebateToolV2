@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import EvidenceCard from "../../../../components/cards/EvidenceCard";
-import { queryClient } from "../../../../main";
 import ContSubSelector from "../../../../components/UI/selectors/ContSubSelector";
 import { saveCard } from "../../../../utils/firebase/firestore/cards.firestore";
 import { useNavigate } from "react-router-dom";
 import PublicPrivateSelector from "../../../../components/UI/selectors/PublicPrivateSelector";
 import { ExclamationCircle } from "react-bootstrap-icons";
+import { useQueryClient } from "react-query";
 
 export default function CreateEvidencePage(){
   const navigate = useNavigate();
-  const user = queryClient.getQueryData('currentUser') as User;
+  const user = useQueryClient().getQueryData("currentUser") as User;
+
   const [errMsg, setErrMsg] = useState<"" | "Please fill all fields.">("");
 
   const [card, setCard] = useState<Evidence>({

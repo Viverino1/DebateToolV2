@@ -36,6 +36,7 @@ type Card = {
 
 type Contention = number | "intro" | "conclusion" | null;
 type Subpoint = number | null;
+type ContSub = {contention: Contention, subpoint: Subpoint}
 
 type Evidence = Card & {
   type: "evidence",

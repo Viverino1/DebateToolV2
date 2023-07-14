@@ -39,7 +39,7 @@ export default function CardTemplate(props: {children: ReactNode, card: AnyCard}
         <div className="absolute top-12 left-0 right-0 bottom-0 px-2 pb-2 flex flex-col text-text text-md">
           <div className="text-text-light">
             <div className="text-xl line-clamp-2 break-words">{title}</div>
-            <a href={sourceLink} className={`text-md underline ${color.text}`}>{sourceName}</a>
+            <a href={sourceLink} target="_blank" className={`text-md underline ${color.text}`}>{sourceName}</a>
           </div>
           <div className="h-0.5 bg-secondary mt-2 mb-1 w-full"/>
           {children}

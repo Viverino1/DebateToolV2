@@ -125,7 +125,7 @@ export default{
           "@apply bg-background-light/50 rounded border-2 border-secondary outline-none appearance-none backdrop-blur-3xl": {}
         },
         ".input": {
-          "@apply background text-xl p-2 placeholder:text-text-dark hover:border-secondary transition w-full h-12 disabled:opacity-50": {}
+          "@apply background text-lg p-2 placeholder:text-text-dark hover:border-secondary transition w-full h-12 disabled:opacity-50": {}
         },
         ".input-focus": {
           "@apply focus:border-secondary focus:bg-background hover:bg-background": {}

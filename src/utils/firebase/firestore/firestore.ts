@@ -2,6 +2,7 @@ import { CollectionReference, DocumentData, collection, doc, getDoc, setDoc, get
 import app, { auth } from "../firebase";
 import store from "../../redux/store";
 import { setTopic } from "../../redux/reducers/appSlice";
+import { queryClient } from "../../../main";
 
 const db = getFirestore(app);
 
@@ -43,9 +44,13 @@ async function saveUser(user: User){
 
 async function getUserByEmail(email: string){
   const q = query(usersCol, where("email", "==", email));
-  const user = (await getDocs(q)).docs[0]?.data() as User;
-  console.log(`${email}'s Data:`, user);
-  return user as User | undefined;
+  const user = (await getDocs(q)).docs[0]?.data();
+  if(user?.uid){
+    queryClient.setQueryData(user.uid, user);
+    return user as User;
+  }else{
+    return null;
+  }
 }
 
 export{

@@ -1,4 +1,4 @@
-import { collection, doc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { queryClient } from "../../../main";
 import db, { getUserByEmail, usersCol } from "./firestore"
 import store from "../../redux/store";
@@ -16,7 +16,7 @@ async function createTeam(teamName: string, teamMemberEmail: string){
   }
 
   const teamMember = await getUserByEmail(teamMemberEmail);
-  if(!teamMember){return null}
+  if(!teamMember || !team.teamName){return null}
 
   const time = Date.now();
   team.invites[teamMember.uid] = {inviteTime: time, permission: "member"}
@@ -32,9 +32,41 @@ async function createTeam(teamName: string, teamMemberEmail: string){
 
   await setDoc(doc(usersCol, user.uid), {teamID: team.teamID}, {merge: true});
 
+  await queryClient.setQueryData("team", team);
+
+  return team;
+}
+
+async function getTeam(){
+  const user = queryClient.getQueryData("currentUser") as User;
+  const teamID = user.teamID;
+  if(!teamID){return null}
+
+  const {topic, side} = store.getState().app;
+
+  const team: Team = {
+    teamID: teamID,
+    teamName: "",
+    contentions: [],
+    members: {},
+    invites: {},
+  }
+
+  const teamDocRef = doc(db, "teams", teamID);
+
+  team.teamName = ((await getDoc(teamDocRef)).data() as any).teamName;
+  team.contentions = ((await getDoc(doc(teamDocRef, "contentions", topic))).data() as any)[side];
+
+  const members = await (await getDocs(collection(teamDocRef, "members"))).docs;
+  members.forEach(doc => team.members[doc.id] = doc.data() as any);
+
+  const invites = await (await getDocs(collection(teamDocRef, "invites"))).docs;
+  invites.forEach(doc => team.invites[doc.id] = doc.data() as any);
+
   return team;
 }
 
 export{
-  createTeam
+  createTeam,
+  getTeam,
 }

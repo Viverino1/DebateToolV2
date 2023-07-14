@@ -1,5 +1,5 @@
 import { queryClient } from "../../../main";
-import { newTeam } from "../../../utils/firebase/firestore/team.firestore";
+import { createTeam } from "../../../utils/firebase/firestore/team.firestore";
 import { getValue } from "../../../utils/helpers";
 
 export default function CreateTeam(){
@@ -31,7 +31,7 @@ export default function CreateTeam(){
 
       <button 
       className="!w-36 text-text-light !h-10 button-primary"
-      onClick={() => newTeam(getValue("teamName"), getValue("teamMember")).then(e => {console.log(e)})}
+      onClick={() => createTeam(getValue("teamName"), getValue("teamMember")).then(e => {console.log(e)})}
       >Create</button>
     </div>
   )

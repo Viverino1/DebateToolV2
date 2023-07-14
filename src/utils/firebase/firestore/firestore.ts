@@ -54,6 +54,7 @@ export{
   getCurrentUser,
   saveUser,
   getUserByEmail,
+  usersCol
 }
 
 export default db;

@@ -18,8 +18,8 @@ type School = {
   name: string,
 }
 
-type Contention = number | "intro" | "conclusion" | null;
-type Subpoint = number | null;
+type Contention = string | null;
+type Subpoint = string | null;
 type ContSub = {contention: Contention, subpoint: Subpoint}
 
 type Card = {
@@ -68,7 +68,7 @@ type TeamPermission = "owner" | "member" | "viewer"
 type Team = {
   teamID: string,
   teamName: string,
-  contentions: {name: string, subpoints: string[]}[];
+  contentions: [];
   members: {[key: string]: {memberSince: number, permission: TeamPermission}}
   invites: {[key: string]: {inviteTime: number, permission: TeamPermission}}
 }

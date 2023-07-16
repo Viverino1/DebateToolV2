@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { arrayUnion, collection, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { queryClient } from "../../../main";
 import db, { getUserByEmail, usersCol } from "./firestore"
 import store from "../../redux/store";
@@ -34,7 +34,7 @@ async function createTeam(teamName: string, teamMemberEmail: string){
 
   await queryClient.setQueryData("team", team);
 
-  return team;
+  return {team: team, teamMember: teamMember};
 }
 
 async function getTeam(){
@@ -63,10 +63,22 @@ async function getTeam(){
   const invites = await (await getDocs(collection(teamDocRef, "invites"))).docs;
   invites.forEach(doc => team.invites[doc.id] = doc.data() as any);
 
+  console.log("%cTeam: ", 'color: green;', team);
+
   return team;
+}
+
+async function addContention(contention: Contention){
+  const {topic, side} = store.getState().app;
+  const team = queryClient.getQueryData("team") as Team;
+  const docRef = doc(db, "teams", team.teamID, "contentions", topic);
+  await updateDoc(docRef, {
+    [side]: arrayUnion(contention),
+  });
 }
 
 export{
   createTeam,
   getTeam,
+  addContention,
 }

@@ -18,6 +18,7 @@ import CreateEvidencePage from "./pages/cards/create/evidence/CreateEvidencePage
 import CreateRebuttalPage from "./pages/cards/create/rebuttal/CreateRebuttalPage";
 import CreateQuotePage from "./pages/cards/create/quote/CreateQuotePage";
 import CreateStatisticPage from "./pages/cards/create/statistic/CreateStatisticPage";
+import { getTeam } from "./utils/firebase/firestore/team.firestore";
 
 export default function App(){
   const location = useLocation().pathname;
@@ -26,8 +27,9 @@ export default function App(){
 
   const {isLoading: isCurrentUserLoading, data: currentUser} = useQuery('currentUser', getCurrentUser, {enabled: user? true : false});
   const {isLoading: isCardsLoading, data: cards} = useQuery('cards', getCards, {enabled: user && currentUser? true : false});
+  const {isLoading: isTeamLoading, data: team} = useQuery('team', getTeam, {enabled: user && currentUser? true : false});
 
-  if(isAuthLoading || isCurrentUserLoading || isCardsLoading){return <Loading/>}
+  if(isAuthLoading || isCurrentUserLoading || isCardsLoading || isTeamLoading){return <Loading/>}
 
   if(user && currentUser){
     return(

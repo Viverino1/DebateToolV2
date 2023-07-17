@@ -1,5 +1,5 @@
-import { useQuery, useQueryClient } from "react-query";
-import { createTeam, getTeam } from "../../../utils/firebase/firestore/team.firestore";
+import { useQueryClient } from "react-query";
+import { createTeam } from "../../../utils/firebase/firestore/team.firestore";
 import { getValue } from "../../../utils/helpers";
 import { useState } from "react";
 import { ExclamationCircle } from "react-bootstrap-icons";

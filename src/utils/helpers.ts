@@ -4,18 +4,6 @@ function getValue(id: string){
   return value? value : "";
 }
 
-function contsub(c: Contention, s: Subpoint){
-  switch(c){
-    case null: return null;
-    case "intro": return "Intro"
-    case "conclusion": return "Conclusion"
-    default: switch(s){
-      case null: return `Contention ${c}`
-      default: return `Contention ${c} Subpoint ${s}`
-    }
-  }
-}
-
 function capitalize(text: string){
   return text[0].toUpperCase() + text.slice(1);
 }
@@ -44,8 +32,10 @@ const dummyEvidenceCard: Evidence = {
   sourceLink: "https://climate.nasa.gov/evidence/#:~:text=Ice%20cores%20drawn%20from%20Greenland,and%20layers%20of%20sedimentary%20rocks.",
   data: "Ice cores drawn from Greenland, Antarctica, and tropical mountain glaciers show that Earth’s climate responds to changes in greenhouse gas levels. Ancient evidence can also be found in tree rings, ocean sediments, coral reefs, and layers of sedimentary rocks. This ancient, or paleoclimate, evidence reveals that current warming is occurring roughly 10 times faster than the average rate of warming after an ice age. Carbon dioxide from human activities is increasing about 250 times faster than it did from natural sources after the last Ice Age.",
   warrant: "This piece of evidence from NASA proves just how harmfull climate change has become over time. The seemingly miniscule effects of this phenomena compound quickly over time. This leaves our world vulnerable to climate disasters and worse problems.",
-  contention: 3,
-  subpoint: 1,
+  contSub: {
+    contentionID: null,
+    subpointID: null,
+  }
 }
 
 const dummyRebuttalCard: Rebuttal = {
@@ -78,8 +68,10 @@ const dummyQuoteCard: Quote = {
   title: "Gandhi Quote",
   data: "Earth provides enough to satisfy every man's needs, but not every man's greed.",
   quotee: "Mahatma Gandhi",
-  contention: "intro",
-  subpoint: null,
+  contSub: {
+    contentionID: null,
+    subpointID: null,
+  },
   sourceName: "A-Z Quotes",
   sourceLink: "https://www.azquotes.com/author/5308-Mahatma_Gandhi/tag/environment",
   warrant: "These words from Mahatma Gandhi represent our stance on this topic. The earth does not provide, nor can it withstand, the greed of mankind."
@@ -96,18 +88,24 @@ const dummyStatisticCard: Statistic = {
   lastEditTime: 90210,
   title: "Human impact on climate change",
   data: "Carbon dioxide from human activities is increasing about 250 times faster than it did from natural sources after the last Ice Age.",
-  contention: 2,
-  subpoint: 3,
+  contSub: {
+    contentionID: null,
+    subpointID: null,
+  },
   warrant: "Human activities are the primary drivers for climate change. History has not seen anything as harmfull as humans since the last ice age. Humans must slow and stop their harm to the planet before we trigger climate disasters.",
   sourceName: "NASA",
   sourceLink: "https://climate.nasa.gov/evidence/",
 }
 
+function getUniqueKey(){
+  return String(Date.now()) + Math.floor(Math.random()*1000)
+}
+
 export {
   getValue,
-  contsub,
   capitalize,
   colorFromType,
+  getUniqueKey,
   dummyEvidenceCard,
   dummyRebuttalCard,
   dummyQuoteCard,

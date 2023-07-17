@@ -1,4 +1,5 @@
 import { useQueryClient } from "react-query";
+import { saveContention } from "../../../utils/firebase/firestore/team.firestore";
 
 export default function CaseSettings(){
   const team = useQueryClient().getQueryData("team") as Team;
@@ -17,7 +18,12 @@ export default function CaseSettings(){
           />
         </div>
       ))}
-      <button className="input !w-48">Add Contention</button>
+      <button className="input !w-48" onClick={() => saveContention({
+        contentionID: "",
+        name: "",
+        index: 1,
+        subpoints: {},
+      }).then(contention => console.log(contention))}>Add Contention</button>
     </div>
   )
 }

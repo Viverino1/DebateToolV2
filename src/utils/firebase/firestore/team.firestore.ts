@@ -2,6 +2,7 @@ import { arrayUnion, collection, doc, getDoc, getDocs, setDoc, updateDoc } from 
 import { queryClient } from "../../../main";
 import db, { getUserByEmail, usersCol } from "./firestore"
 import store from "../../redux/store";
+import { getUniqueKey } from "../../helpers";
 
 async function createTeam(teamName: string, teamMemberEmail: string){
   const user = queryClient.getQueryData("currentUser") as User;
@@ -42,8 +43,6 @@ async function getTeam(){
   const teamID = user.teamID;
   if(!teamID){return null}
 
-  const {topic, side} = store.getState().app;
-
   const team: Team = {
     teamID: teamID,
     teamName: "",
@@ -55,30 +54,52 @@ async function getTeam(){
   const teamDocRef = doc(db, "teams", teamID);
 
   team.teamName = ((await getDoc(teamDocRef)).data() as any).teamName;
-  team.contentions = ((await getDoc(doc(teamDocRef, "contentions", topic))).data() as any)[side];
+  team.contentions = await getContentions();
 
   const members = await (await getDocs(collection(teamDocRef, "members"))).docs;
   members.forEach(doc => team.members[doc.id] = doc.data() as any);
 
   const invites = await (await getDocs(collection(teamDocRef, "invites"))).docs;
   invites.forEach(doc => team.invites[doc.id] = doc.data() as any);
-
+  
   console.log("%cTeam: ", 'color: green;', team);
 
   return team;
 }
 
-async function addContention(contention: Contention){
+async function saveContention(contention: Contention){
   const {topic, side} = store.getState().app;
-  const team = queryClient.getQueryData("team") as Team;
+  const team = queryClient.getQueryData('team') as Team;
+
   const docRef = doc(db, "teams", team.teamID, "contentions", topic);
-  await updateDoc(docRef, {
-    [side]: arrayUnion(contention),
-  });
+
+  if(contention.contentionID === ""){
+    contention.contentionID = getUniqueKey();
+  }
+
+  await setDoc(docRef, {
+    [side]: {
+      [contention.contentionID]: contention,
+    }
+  },{merge: true})
+
+  return contention;
+}
+
+async function getContentions(){
+  const {topic, side} = store.getState().app;
+  const user = queryClient.getQueryData("currentUser") as User;
+
+  const docRef = doc(db, "teams", user.teamID as string, "contentions", topic);
+
+  const contentionsObject = ((await getDoc(docRef)).data() as any)[side];
+  console.log(contentionsObject);
+
+  return [] as Contention[];
 }
 
 export{
   createTeam,
   getTeam,
-  addContention,
+  saveContention,
 }

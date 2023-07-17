@@ -18,9 +18,23 @@ type School = {
   name: string,
 }
 
-type Contention = string | null;
-type Subpoint = string | null;
-type ContSub = {contention: Contention, subpoint: Subpoint}
+type Contention = {
+  contentionID: string,
+  index: number,
+  name: string,
+  subpoints: {[key: string]: Subpoint},
+}
+
+type Subpoint = {
+  subpointID: string,
+  index: number,
+  name: string,
+}
+
+type ContSub = {
+  contentionID: string | null,
+  subpointID: string | null,
+}
 
 type Card = {
   type: "evidence" | "quote" | "rebuttal" | "statistic",
@@ -40,14 +54,12 @@ type Card = {
 
 type Evidence = Card & {
   type: "evidence",
-  contention: Contention,
-  subpoint: Subpoint,
+  contSub: ContSub,
 }
 
 type Quote = Card & {
   type: "quote",
-  contention: Contention,
-  subpoint: Subpoint,
+  contSub: ContSub,
   quotee: string,
 }
 
@@ -59,16 +71,15 @@ type Rebuttal = Card & {
 
 type Statistic = Card & {
   type: "statistic",
-  contention: Contention,
-  subpoint: Subpoint,
+  contSub: ContSub,
 }
 
-type TeamPermission = "owner" | "member" | "viewer"
+type TeamPermission = "owner" | "member" | "viewer";
 
 type Team = {
   teamID: string,
   teamName: string,
-  contentions: [];
+  contentions: Contention[];
   members: {[key: string]: {memberSince: number, permission: TeamPermission}}
   invites: {[key: string]: {inviteTime: number, permission: TeamPermission}}
 }

@@ -9,7 +9,7 @@ export default function SettingsPage(){
   const user = queryClient.getQueryData("currentUser") as User;
   return(
     <div className="w-full h-full p-4 flex flex-col space-y-4 overflow-auto">
-      {user.teamID? <><TeamSettings/> <CaseSettings/></> : <CreateTeam/>}
+      {user.teamID? <><CaseSettings/> <TeamSettings/></> : <CreateTeam/>}
       <UserSettings/>
     </div>
   )

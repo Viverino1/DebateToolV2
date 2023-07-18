@@ -22,12 +22,11 @@ type Contention = {
   contentionID: string,
   index: number,
   name: string,
-  subpoints: {[key: string]: Subpoint},
+  subpoints: Subpoint[],
 }
 
 type Subpoint = {
   subpointID: string,
-  index: number,
   name: string,
 }
 

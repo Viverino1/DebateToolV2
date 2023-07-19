@@ -1,4 +1,4 @@
-import { and, collection, doc, getDoc, getDocs, or, query, setDoc, where } from "firebase/firestore";
+import { and, collection, doc, getDocs, or, query, setDoc, where } from "firebase/firestore";
 import db, { getCurrentUser } from "./firestore";
 import store from "../../redux/store";
 import { queryClient } from "../../../main";

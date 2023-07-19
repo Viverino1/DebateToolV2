@@ -7,8 +7,6 @@ import store from './utils/redux/store.ts'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { getSchools, getTopics } from './utils/firebase/firestore/firestore.ts'
-import { createWebStoragePersistor } from "react-query/createWebStoragePersistor-experimental"
-import { persistQueryClient } from "react-query/persistQueryClient-experimental"
 
 const queryClient = new QueryClient({
   defaultOptions: {

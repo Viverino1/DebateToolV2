@@ -8,7 +8,6 @@ import SchoolSelector from "../../components/UI/selectors/SchoolSelector";
 import SpeakerSelector from "../../components/UI/selectors/SpeakerSelector";
 import { getCurrentUser, saveUser } from "../../utils/firebase/firestore/firestore";
 import { useQuery } from "react-query";
-import { useNavigate } from "react-router-dom";
 
 export default function AuthPage(){
   const {data: currentUser, refetch: refetchCurrentUser} = useQuery('currentUser', getCurrentUser);
@@ -64,8 +63,6 @@ function Provider(props: {icon: ReactElement, providerName: string, onClick: () 
 
 function Register(props: {fbu: FBU, refetchUser: () => void}){
   const {fbu} = props;
-
-  const navigate = useNavigate();
 
   const [user, setUser] = useState<User>({
     uid: fbu.uid,

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import PublicPrivateSelector from "../../../../components/UI/selectors/PublicPrivateSelector";
 import { ExclamationCircle } from "react-bootstrap-icons";
 import { useQueryClient } from "react-query";
+import ContSubSelector from "../../../../components/UI/selectors/ContSubSelector";
 
 export default function CreateEvidencePage(){
   const navigate = useNavigate();
@@ -45,6 +46,12 @@ export default function CreateEvidencePage(){
           placeholder="Title"
           onChange={e => {
             setCard(old => ({...old, title: e.target.value}))
+          }}
+          />
+
+          <ContSubSelector
+          onChange={contSub => {
+            setCard(old => ({...old, contSub: {contentionID: contSub.contentionID, subpointID: contSub.subpointID}}));
           }}
           />
 

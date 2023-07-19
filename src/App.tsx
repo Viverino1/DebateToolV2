@@ -27,7 +27,7 @@ export default function App(){
 
   const {isLoading: isCurrentUserLoading, data: currentUser} = useQuery('currentUser', getCurrentUser, {enabled: user? true : false});
   const {isLoading: isCardsLoading, data: cards} = useQuery('cards', getCards, {enabled: user && currentUser? true : false});
-  const {isLoading: isTeamLoading, data: team} = useQuery('team', getTeam, {enabled: user && currentUser? true : false});
+  const {isLoading: isTeamLoading} = useQuery('team', getTeam, {enabled: user && currentUser? true : false});
 
   if(isAuthLoading || isCurrentUserLoading || isCardsLoading || isTeamLoading){return <Loading/>}
 

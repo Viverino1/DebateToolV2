@@ -1,3 +1,5 @@
+import { queryClient } from "../main";
+
 function getValue(id: string){
   const inputElement = document.getElementById(id) as HTMLInputElement | null;
   const value = inputElement?.value;
@@ -20,7 +22,7 @@ function colorFromType(type: string){
 
 const dummyEvidenceCard: Evidence = {
   type: "evidence",
-  cardID: "DUMMY-EVIDENCE-CARD",
+  cardID: "",
   ownerUID: "DUMMY-USER",
   teamID: null,
   school: "DUMMY-SCHOOL",
@@ -40,7 +42,7 @@ const dummyEvidenceCard: Evidence = {
 
 const dummyRebuttalCard: Rebuttal = {
   type: "rebuttal",
-  cardID: "DUMMY-REBUTTAL-CARD",
+  cardID: "",
   ownerUID: "DUMMY-USER",
   teamID: null,
   school: "DUMMY-SCHOOL",
@@ -58,7 +60,7 @@ const dummyRebuttalCard: Rebuttal = {
 
 const dummyQuoteCard: Quote = {
   type: "quote",
-  cardID: "DUMMY-QUOTE-CARD",
+  cardID: "",
   ownerUID: "DUMMY-USER",
   teamID: null,
   school: "DUMMY-SCHOOL",
@@ -79,7 +81,7 @@ const dummyQuoteCard: Quote = {
 
 const dummyStatisticCard: Statistic = {
   type: "statistic",
-  cardID: "DUMMY-STATISTIC-CARD",
+  cardID: "",
   ownerUID: "DUMMY-USER",
   teamID: null,
   school: "DUMMY-SCHOOL",
@@ -101,11 +103,34 @@ function getUniqueKey(){
   return String(Date.now()) + Math.floor(Math.random()*1000)
 }
 
+function getContSub(contSub: ContSub){
+  const contentions = (queryClient.getQueryData('team') as Team).contentions;
+
+  const contention = contentions.filter(cont => cont.contentionID === contSub?.contentionID?? "")[0];
+  const subpoint = contention?.subpoints.filter(sub => sub.subpointID === contSub?.subpointID?? "")[0];
+
+  return {contention, subpoint}
+}
+
+function contSubToString(contention: Contention | undefined, subpoint: Subpoint | undefined){
+  switch(contention?.contentionID){
+    case undefined: return "No Contention";
+    case "intro": case "conclusion": return contention.name;
+    default:
+      switch(subpoint?.subpointID){
+        case undefined: return `Contention ${contention?.index}`
+        default: return `Contention ${contention?.index}, Subpoint ${subpoint? (Number(contention?.subpoints.indexOf(subpoint)) + 1) : "error"}`
+      }
+  }
+}
+
 export {
   getValue,
   capitalize,
   colorFromType,
   getUniqueKey,
+  contSubToString,
+  getContSub,
   dummyEvidenceCard,
   dummyRebuttalCard,
   dummyQuoteCard,

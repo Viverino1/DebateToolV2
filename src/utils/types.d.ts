@@ -83,4 +83,4 @@ type Team = {
   invites: {[key: string]: {inviteTime: number, permission: TeamPermission}}
 }
 
-type AnyCard = (Evidence | Rebuttal | Quote | Statistic) & {contention?: Contention, subpoint?: Subpoint};
+type AnyCard = (Evidence | Rebuttal | Quote | Statistic) & {contSub: ContSub};

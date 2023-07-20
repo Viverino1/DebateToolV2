@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { capitalize, colorFromType, contSubToString, getContSub } from "../../utils/helpers";
 import { ArrowsAngleExpand, StarFill } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
+import { possiblyNullifyContSub } from "../../utils/firebase/firestore/team.firestore";
 
 export default function CardTemplate(props: {children: ReactNode, card: AnyCard}){
   const navigate = useNavigate();
@@ -21,6 +22,8 @@ export default function CardTemplate(props: {children: ReactNode, card: AnyCard}
   const color = colorFromType(type);
 
   const {contention, subpoint} = getContSub(contSub);
+
+  possiblyNullifyContSub(cardID, contention, subpoint);
 
   return(
     <div className="relative full rounded overflow-clip">

@@ -122,8 +122,27 @@ async function getContentions(){
   return contentionsArray;
 }
 
+async function possiblyNullifyContSub(cardID: string, contention: Contention | undefined, subpoint: Subpoint | undefined){
+  const cards = queryClient.getQueryData('cards') as {[key: string]: AnyCard};
+
+  const nullifyContention = contention == undefined? true : false;
+  const nullifySubpoint = subpoint == undefined? true : false;
+
+  const contSub = cards[cardID].contSub;
+  
+
+  queryClient.setQueryData('cards', cards);
+
+  const {topic, side} = store.getState().app;
+  const docRef = doc(db, "cards", topic, side, cardID);
+
+  //await setDoc(docRef, cards[cardID]);
+  console.log(`Nullified ${cardID}`);
+}
+
 export{
   createTeam,
   getTeam,
   saveContentions,
+  possiblyNullifyContSub,
 }

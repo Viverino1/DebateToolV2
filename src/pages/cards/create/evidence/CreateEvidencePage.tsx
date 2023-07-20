@@ -13,6 +13,8 @@ export default function CreateEvidencePage(){
 
   const [errMsg, setErrMsg] = useState<"" | "Please fill all fields.">("");
 
+  const [isSaving, setIsSaving] = useState(false);
+
   const [card, setCard] = useState<Evidence>({
     type: "evidence",
     cardID: "",
@@ -38,7 +40,14 @@ export default function CreateEvidencePage(){
   }, [card])
 
   return(
-    <div className="w-full h-full flex">
+    <div className="relative w-full h-full flex">
+      <div className={`absolute top-0 bottom-0 left-0 right-0 w-full h-full backdrop-blur-sm z-20 transition opacity-0 flex justify-center items-center ${isSaving? "opacity-100" : "pointer-events-none"}`}>
+        <div className="!backdrop-blur-3xl flex flex-col justify-center items-center animate-pulse">
+          <img src="/DebateToolLogo.svg" className="w-48 aspect-square"/>
+          <div className="text-2xl">Saving Card...</div>
+        </div>
+      </div>
+
       <div className="w-full md:w-1/2 lg:w-2/3 h-full p-4 flex flex-col space-y-4">
         <div className="flex flex-col space-y-4">
           <input type="text" 
@@ -66,7 +75,7 @@ export default function CreateEvidencePage(){
 
           <input 
           type="text" 
-          className="input !text-lg" 
+          className="input !text-lg text-evidence" 
           placeholder="Source Link"
           onChange={e => {
             setCard(old => ({...old, sourceLink: e.target.value}))
@@ -90,7 +99,15 @@ export default function CreateEvidencePage(){
         }}
         />
 
-        <button className="button-evidence text-text-light">Create Card</button>
+        <div className="w-full flex md:hidden justify-center space-x-4">
+          <PublicPrivateSelector
+            default={card.isPublic}
+            onChange={e => {
+              setCard(old => ({...old, isPublic: e}))
+          }}
+          />
+          <button className="button-evidence !w-32 text-text-light">Save Card</button>
+          </div>
       </div>
       
       <div className="relative hidden md:flex flex-col items-center justify-center md:w-1/2 lg:w-1/3 h-full p-4 pl-0">
@@ -113,8 +130,9 @@ export default function CreateEvidencePage(){
               return;
             }
             const time = Date.now();
+            setIsSaving(true);
             saveCard({...card, createTime: time, lastEditTime: time})
-            .then(() => navigate("/cards"))
+            .then(() => {navigate("/cards")})
           }}>Save Card</button>
         </div>
       </div>

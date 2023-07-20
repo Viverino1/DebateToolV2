@@ -38,9 +38,10 @@ async function createTeam(teamName: string, teamMemberEmail: string){
 }
 
 async function getTeam(){
+  console.log("%cGetting team: ", 'color: green;');
   const user = queryClient.getQueryData("currentUser") as User;
   const teamID = user.teamID;
-  if(!teamID){return null}
+  if(!teamID){console.log("No User ID"); return null}
 
   const team: Team = {
     teamID: teamID,
@@ -92,18 +93,10 @@ async function getContentions(){
 
   const docRef = doc(db, "teams", user.teamID as string, "contentions", topic);
 
-  const contentionsObject = ((await getDoc(docRef)).data() as any)[side];
-
-  if(!contentionsObject){
-    setDoc(docRef, {AFF: {}}, {merge: true});
-    return [] as Contention[];
-  }
+  const docData = ((await getDoc(docRef)).data() as any);
+  const contentionsObject = docData && side in docData? docData[side] : undefined;
 
   var contentionsArray: Contention[] = [];
-  Object.keys(contentionsObject).forEach(contentionID => {
-    const contention = contentionsObject[contentionID] as Contention;
-    contentionsArray[contention.index] = contention;
-  });
 
   contentionsArray[0] = {
     name: "Intro",
@@ -119,21 +112,35 @@ async function getContentions(){
     contentionID: "conclusion",
   }
 
+  if(!contentionsObject){
+    console.log("no contention object")
+    setDoc(docRef, {[side]: {}}, {merge: true});
+    return contentionsArray;
+  }
+
+  Object.keys(contentionsObject).forEach(contentionID => {
+    const contention = contentionsObject[contentionID] as Contention;
+    contentionsArray[contention.index] = contention;
+  });
+
   return contentionsArray;
 }
 
 async function possiblyNullifyContSub(cardID: string, contention: Contention | undefined, subpoint: Subpoint | undefined){
+  if(queryClient.isFetching('team'))return;
+
   const cards = queryClient.getQueryData('cards') as {[key: string]: AnyCard};
 
-  if(!cards[cardID]?.contSub) return;
+  const contsub = cards[cardID]?.contSub;
+  if(!contsub) return;
 
-  const nullifyContention = contention === undefined && cards[cardID].contSub.contentionID !== null? true : false;
-  const nullifySubpoint = subpoint === undefined && cards[cardID].contSub.subpointID !== null? true : false;
+  const nullifyContention = contention === undefined && contsub.contentionID !== null? true : false;
+  const nullifySubpoint = subpoint === undefined && contsub.subpointID !== null? true : false;
 
   if(!nullifyContention && !nullifySubpoint) return;
 
-  if(nullifyContention){cards[cardID].contSub.contentionID = null};
-  if(nullifySubpoint){cards[cardID].contSub.subpointID = null};
+  if(nullifyContention){contsub.contentionID = null};
+  if(nullifySubpoint){contsub.subpointID = null};
   queryClient.setQueryData('cards', cards);
 
   const {topic, side} = store.getState().app;

@@ -7,6 +7,8 @@ import { getUniqueKey } from "../../../utils/helpers";
 export default function CaseSettings(){
   const conts = (useQueryClient().getQueryData("team") as Team).contentions;
 
+  useEffect(() => {console.log(conts)}, [conts]);
+
   const [contentions, setContentions] = useState(conts);
   
   useEffect(() => {setContentions(conts)}, [conts]);

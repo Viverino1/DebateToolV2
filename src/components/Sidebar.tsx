@@ -97,6 +97,7 @@ function SideSelector(){
       onChange={(e) => {
         dispatch(setSide(e.target.value as Side));
         queryClient.refetchQueries({queryKey: "cards", exact: true});
+        queryClient.refetchQueries({queryKey: "team", exact: true});
       }}
       value={side}>
         <option value="AFF">AFF</option>
@@ -121,6 +122,7 @@ function TopicSelector(){
       onChange={(e) => {
         dispatch(setTopic(e.target.value));
         queryClient.refetchQueries({queryKey: "cards", exact: true});
+        queryClient.refetchQueries({queryKey: "team", exact: true});
       }}
       disabled={isLoading}
       value={topic}>

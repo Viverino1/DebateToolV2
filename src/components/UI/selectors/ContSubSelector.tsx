@@ -11,7 +11,7 @@ export default function ContSubSelector(props: {onChange: (contSub: {contentionI
 
   return(
     <div className="flex space-x-4">
-      <select className="input"
+      <select className="input select"
       value={activeCont?? ""}
       onChange={e => {
         setActiveCont(e.target.value)

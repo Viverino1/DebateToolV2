@@ -1,4 +1,4 @@
-import { CollectionReference, DocumentData, collection, doc, getDoc, setDoc, getFirestore, query, where, getDocs } from "firebase/firestore";
+import { CollectionReference, DocumentData, collection, doc, getDoc, setDoc, getFirestore, query, where, getDocs, arrayUnion } from "firebase/firestore";
 import app, { auth } from "../firebase";
 import store from "../../redux/store";
 import { setTopic } from "../../redux/reducers/appSlice";

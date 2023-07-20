@@ -90,7 +90,9 @@ export default function CreateEvidencePage(){
         }}
         />
 
+        <button className="button-evidence text-text-light">Create Card</button>
       </div>
+      
       <div className="relative hidden md:flex flex-col items-center justify-center md:w-1/2 lg:w-1/3 h-full p-4 pl-0">
         <h1 className="text-2xl text-evidence">Preview</h1>
         <div className="text-xl text-primary pb-2 flex space-x-2">

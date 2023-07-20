@@ -125,18 +125,23 @@ async function getContentions(){
 async function possiblyNullifyContSub(cardID: string, contention: Contention | undefined, subpoint: Subpoint | undefined){
   const cards = queryClient.getQueryData('cards') as {[key: string]: AnyCard};
 
-  const nullifyContention = contention == undefined? true : false;
-  const nullifySubpoint = subpoint == undefined? true : false;
+  if(!cards[cardID]?.contSub) return;
 
-  const contSub = cards[cardID].contSub;
-  
+  const nullifyContention = contention === undefined && cards[cardID].contSub.contentionID !== null? true : false;
+  const nullifySubpoint = subpoint === undefined && cards[cardID].contSub.subpointID !== null? true : false;
 
+  if(!nullifyContention && !nullifySubpoint) return;
+
+  if(nullifyContention){cards[cardID].contSub.contentionID = null};
+  if(nullifySubpoint){cards[cardID].contSub.subpointID = null};
   queryClient.setQueryData('cards', cards);
 
   const {topic, side} = store.getState().app;
   const docRef = doc(db, "cards", topic, side, cardID);
 
-  //await setDoc(docRef, cards[cardID]);
+  await setDoc(docRef, {
+    contSub: cards[cardID].contSub,
+  }, {merge: true});
   console.log(`Nullified ${cardID}`);
 }
 

@@ -6,7 +6,7 @@ import { ExclamationCircle } from "react-bootstrap-icons";
 import { useQueryClient } from "react-query";
 import RebuttalCard from "../../../../components/cards/RebuttalCard";
 
-export default function CreateRebuttalPage(){
+export default function CreateRebuttal(props: {editCard?: Rebuttal}){
   const navigate = useNavigate();
   const user = useQueryClient().getQueryData("currentUser") as User;
 
@@ -14,7 +14,7 @@ export default function CreateRebuttalPage(){
 
   const [isSaving, setIsSaving] = useState(false);
 
-  const [card, setCard] = useState<Rebuttal>({
+  const [card, setCard] = useState<Rebuttal>(props.editCard?? {
     type: "rebuttal",
     cardID: "",
     ownerUID: user.uid,
@@ -49,12 +49,14 @@ export default function CreateRebuttalPage(){
           <input type="text" 
           className="input text-text-light" 
           placeholder="Title"
+          value={card.title}
           onChange={e => {
             setCard(old => ({...old, title: e.target.value}))
           }}
           />
 
           <input 
+          value={card.sourceName}
           type="text" 
           className="input !text-lg" 
           placeholder="Source Name"
@@ -64,6 +66,7 @@ export default function CreateRebuttalPage(){
           />
 
           <input 
+          value={card.sourceLink}
           type="text" 
           className="input !text-lg text-rebuttal" 
           placeholder="Source Link"
@@ -73,25 +76,28 @@ export default function CreateRebuttalPage(){
           />
 
           <input 
+          value={card.accusation}
           type="text" 
           className="input !text-lg" 
-          placeholder="Accusation (opponent's words)"
+          placeholder="Accusation (opponents words)"
           onChange={e => {
             setCard(old => ({...old, accusation: e.target.value}))
           }}
           />
-
+  
           <input 
+          value={card.counterClaim}
           type="text" 
           className="input !text-lg" 
-          placeholder="Counterclaim (your rebuttal statement)"
+          placeholder="Counter Claim"
           onChange={e => {
             setCard(old => ({...old, counterClaim: e.target.value}))
           }}
-          />
+        />
         </div>
 
         <textarea 
+        value={card.data}
         className="input !h-full !text-lg resize-none"
         placeholder="Data (text evidence)"
         onChange={e => {
@@ -100,6 +106,7 @@ export default function CreateRebuttalPage(){
         />
 
         <textarea 
+        value={card.warrant}
         className="input !h-full !text-lg resize-none"
         placeholder="Warrant (logical reasoning)"
         onChange={e => {
@@ -133,13 +140,12 @@ export default function CreateRebuttalPage(){
           }}
           />
           <button className="button-rebuttal !w-32 text-text-light" onClick={() => {
-            if(!card.data || !card.title || !card.sourceName || !card.sourceLink || !card.warrant || !card.accusation || !card.counterClaim){
+            if(!card.data || !card.title || !card.sourceName || !card.sourceLink || !card.warrant){
               setErrMsg("Please fill all fields.");
               return;
             }
-            const time = Date.now();
             setIsSaving(true);
-            saveCard({...card, createTime: time, lastEditTime: time})
+            saveCard(card)
             .then(() => {navigate("/cards")})
           }}>Save Card</button>
         </div>

@@ -123,6 +123,13 @@ async function getContentions(){
     contentionsArray[contention.index] = contention;
   });
 
+  contentionsArray[contentionsArray.length] = {
+    name: "Conclusion",
+    index: contentionsArray.length,
+    subpoints: [],
+    contentionID: "conclusion",
+  }
+
   return contentionsArray;
 }
 

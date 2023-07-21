@@ -40,7 +40,7 @@ export default function ContSubSelector(props: {onChange: (contSub: {contentionI
         )) : null}
       </select>
 
-      <div className="absolute right-0 rounded !backdrop-blur-[2px] z-30 w-full h-full background-light text-lg flex justify-center items-center overflow-clip">Create a <span onClick={() => navigate("/settings")}>team</span> to manage Contentions and Subpoints</div>
+      <button onClick={() => navigate("/settings")} className={`underline absolute right-0 rounded !backdrop-blur-[2px] z-30 w-full h-full input text-lg ${!contentions? "flex" : "hidden"} justify-center items-center overflow-clip`}>Create a team to manage Contentions and Subpoints <span></span></button>
     </div>
   )
 }

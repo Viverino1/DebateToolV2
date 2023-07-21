@@ -45,8 +45,8 @@ export default function ExpandedCardTemplate(props: {children: ReactNode, card: 
 
         <div className="mt-8">{props.children}</div>
 
-        <h2 className="text-xl text-text-light mt-8">{capitalize(type)}</h2>
-        <p className="w-3/4">{data}</p>
+        <h2 className="text-xl text-text-light mt-8">Data</h2>
+        <p className="w-3/4">"{data}"</p>
 
         <h2 className="text-xl text-text-light mt-8">Warrant</h2>
         <p className="w-3/4">{warrant}</p>

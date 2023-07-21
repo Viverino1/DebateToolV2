@@ -20,6 +20,9 @@ import CreateQuotePage from "./pages/cards/create/quote/CreateQuotePage";
 import CreateStatisticPage from "./pages/cards/create/statistic/CreateStatisticPage";
 import { getTeam } from "./utils/firebase/firestore/team.firestore";
 import EvidenceCardExpanded from "./components/cards/expanded/EvidenceCardExpanded";
+import RebuttalCardExpanded from "./components/cards/expanded/RebuttalCardExpanded";
+import QuoteCardExpanded from "./components/cards/expanded/QuoteCardExpanded";
+import StatisticCardExpanded from "./components/cards/expanded/StatisticCardExpanded";
 
 export default function App(){
   const location = useLocation().pathname;
@@ -82,6 +85,9 @@ function RenderCorrectExpandedCard(props: {card: AnyCard}){
   } = props.card;
 
   if(type == "evidence") return <EvidenceCardExpanded card={props.card as Evidence}/>
+  if(type == "rebuttal") return <RebuttalCardExpanded card={props.card as Rebuttal}/>
+  if(type == "quote") return <QuoteCardExpanded card={props.card as Quote}/>
+  if(type == "statistic") return <StatisticCardExpanded card={props.card as Statistic}/>
 }
 
 function RenderCorrectEditPage(props: {card: AnyCard}){
@@ -90,4 +96,7 @@ function RenderCorrectEditPage(props: {card: AnyCard}){
   } = props.card;
 
   if(type == "evidence") return <CreateEvidencePage editCard={props.card as Evidence}/>
+  if(type == "rebuttal") return <CreateRebuttalPage editCard={props.card as Rebuttal}/>
+  if(type == "quote") return <CreateQuotePage editCard={props.card as Quote}/>
+  if(type == "statistic") return <CreateStatisticPage editCard={props.card as Statistic}/>
 }

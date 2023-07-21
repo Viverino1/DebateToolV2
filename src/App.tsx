@@ -19,6 +19,7 @@ import CreateRebuttalPage from "./pages/cards/create/rebuttal/CreateRebuttalPage
 import CreateQuotePage from "./pages/cards/create/quote/CreateQuotePage";
 import CreateStatisticPage from "./pages/cards/create/statistic/CreateStatisticPage";
 import { getTeam } from "./utils/firebase/firestore/team.firestore";
+import EvidenceCardExpanded from "./components/cards/expanded/EvidenceCardExpanded";
 
 export default function App(){
   const location = useLocation().pathname;
@@ -41,7 +42,11 @@ export default function App(){
             <Route path="/cards">
               <Route index element={<CardsPage/>}/>
               {Object.keys(cards as object).map(cardID => (
-                <Route key={cardID} path={cardID} element={<div>{cardID}</div>}/>
+                <Route key={cardID} path={cardID} >
+                  <Route index element={<RenderCorrectExpandedCard card={(cards as {[key: string]: AnyCard})[cardID]}/>}/>
+                  <Route path="edit" 
+                  element={<RenderCorrectEditPage card={(cards as {[key: string]: AnyCard})[cardID]}/>}/>
+                </Route>
               ))}
               <Route path="create">
                 <Route index element={<CreatePage/>}/>
@@ -69,4 +74,20 @@ export default function App(){
       </Routes>
     )
   }
+}
+
+function RenderCorrectExpandedCard(props: {card: AnyCard}){
+  const {
+    type
+  } = props.card;
+
+  if(type == "evidence") return <EvidenceCardExpanded card={props.card as Evidence}/>
+}
+
+function RenderCorrectEditPage(props: {card: AnyCard}){
+  const {
+    type
+  } = props.card;
+
+  if(type == "evidence") return <CreateEvidencePage editCard={props.card as Evidence}/>
 }

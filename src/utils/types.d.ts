@@ -39,7 +39,6 @@ type Card = {
   type: "evidence" | "quote" | "rebuttal" | "statistic",
   cardID: string,
   ownerUID: string,
-  teamID: string | null,
   school: string,
   isPublic: boolean,
   createTime: number,

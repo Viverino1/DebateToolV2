@@ -7,7 +7,7 @@ import { ExclamationCircle } from "react-bootstrap-icons";
 import { useQueryClient } from "react-query";
 import ContSubSelector from "../../../../components/UI/selectors/ContSubSelector";
 
-export default function CreateEvidencePage(){
+export default function CreateEvidencePage(props: {editCard?: Evidence}){
   const navigate = useNavigate();
   const user = useQueryClient().getQueryData("currentUser") as User;
 
@@ -15,11 +15,10 @@ export default function CreateEvidencePage(){
 
   const [isSaving, setIsSaving] = useState(false);
 
-  const [card, setCard] = useState<Evidence>({
+  const [card, setCard] = useState<Evidence>(props.editCard?? {
     type: "evidence",
     cardID: "",
     ownerUID: user.uid,
-    teamID: user.teamID,
     school: user.school,
     isPublic: false,
     createTime: 0,
@@ -53,18 +52,21 @@ export default function CreateEvidencePage(){
           <input type="text" 
           className="input text-text-light" 
           placeholder="Title"
+          value={card.title}
           onChange={e => {
             setCard(old => ({...old, title: e.target.value}))
           }}
           />
 
           <ContSubSelector
+          default={card.contSub}
           onChange={contSub => {
             setCard(old => ({...old, contSub: {contentionID: contSub.contentionID, subpointID: contSub.subpointID}}));
           }}
           />
 
           <input 
+          value={card.sourceName}
           type="text" 
           className="input !text-lg" 
           placeholder="Source Name"
@@ -74,6 +76,7 @@ export default function CreateEvidencePage(){
           />
 
           <input 
+          value={card.sourceLink}
           type="text" 
           className="input !text-lg text-evidence" 
           placeholder="Source Link"
@@ -84,6 +87,7 @@ export default function CreateEvidencePage(){
         </div>
 
         <textarea 
+        value={card.data}
         className="input !h-full !text-lg resize-none"
         placeholder="Data (text evidence)"
         onChange={e => {
@@ -92,6 +96,7 @@ export default function CreateEvidencePage(){
         />
 
         <textarea 
+        value={card.warrant}
         className="input !h-full !text-lg resize-none"
         placeholder="Warrant (logical reasoning)"
         onChange={e => {
@@ -129,9 +134,8 @@ export default function CreateEvidencePage(){
               setErrMsg("Please fill all fields.");
               return;
             }
-            const time = Date.now();
             setIsSaving(true);
-            saveCard({...card, createTime: time, lastEditTime: time})
+            saveCard(card)
             .then(() => {navigate("/cards")})
           }}>Save Card</button>
         </div>

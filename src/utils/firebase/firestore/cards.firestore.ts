@@ -1,4 +1,4 @@
-import { and, collection, doc, getDocs, or, query, setDoc, where } from "firebase/firestore";
+import { and, collection, deleteDoc, doc, getDocs, or, query, setDoc, where } from "firebase/firestore";
 import db, { getCurrentUser } from "./firestore";
 import store from "../../redux/store";
 import { queryClient } from "../../../main";
@@ -7,9 +7,13 @@ async function saveCard(card: AnyCard){
   const {side, topic} = store.getState().app;
   const colRef = collection(db, "cards", topic, side);
 
+  const time = Date.now();
+  card.lastEditTime = time;
+
   if(!card.cardID){
     const docRef = doc(colRef);
     card.cardID = docRef.id;
+    card.createTime = time;
     await setDoc(docRef, card);
   }else{
     const docRef = doc(colRef, card.cardID);
@@ -56,20 +60,21 @@ async function getCards(){
   return cards;
 }
 
-// async function getCard(id: string){
-//   console.log("Getting Card: ", id);
-//   const {side, topic} = store.getState().app;
-//   const docRef = doc(db, "cards", topic, side, id);
-//   const card = (await getDoc(docRef)).data() as Card;
-//   switch(card.type){
-//     case "evidence": return card as Evidence;
-//     case "rebuttal": return card as Rebuttal;
-//     case "quote": return card as Quote;
-//     case "statistic": return card as Statistic;
-//   }
-// }
+async function deleteCard(cardID: string){
+  queryClient.setQueryData('cards', ((old: any) => {
+    const newCards = {...old} as {[key: string]: AnyCard}
+    delete newCards[cardID];
+    return newCards;
+  }));
+
+  const {side, topic} = store.getState().app;
+  const docRef = doc(db, "cards", topic, side, cardID);
+  await deleteDoc(docRef);
+  console.log("Deleted Card: ", cardID);
+}
 
 export{
   saveCard,
   getCards,
+  deleteCard,
 }

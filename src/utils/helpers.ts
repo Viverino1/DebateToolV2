@@ -24,7 +24,6 @@ const dummyEvidenceCard: Evidence = {
   type: "evidence",
   cardID: "",
   ownerUID: "DUMMY-USER",
-  teamID: null,
   school: "DUMMY-SCHOOL",
   isPublic: true,
   createTime: 23250,
@@ -44,7 +43,6 @@ const dummyRebuttalCard: Rebuttal = {
   type: "rebuttal",
   cardID: "",
   ownerUID: "DUMMY-USER",
-  teamID: null,
   school: "DUMMY-SCHOOL",
   isPublic: true,
   createTime: 23250,
@@ -62,7 +60,6 @@ const dummyQuoteCard: Quote = {
   type: "quote",
   cardID: "",
   ownerUID: "DUMMY-USER",
-  teamID: null,
   school: "DUMMY-SCHOOL",
   isPublic: true,
   createTime: 23250,
@@ -83,7 +80,6 @@ const dummyStatisticCard: Statistic = {
   type: "statistic",
   cardID: "",
   ownerUID: "DUMMY-USER",
-  teamID: null,
   school: "DUMMY-SCHOOL",
   isPublic: true,
   createTime: 23250,
@@ -103,8 +99,10 @@ function getUniqueKey(){
   return String(Date.now()) + Math.floor(Math.random()*1000)
 }
 
-function getContSub(contSub: ContSub){
-  const contentions = (queryClient.getQueryData('team') as Team).contentions;
+function getContSub(contSub: ContSub | undefined){
+  const team = queryClient.getQueryData('team') as Team;
+  if(!team) return {}
+  const contentions = team.contentions;
 
   const contention = contentions.filter(cont => cont.contentionID === contSub?.contentionID?? "")[0];
   const subpoint = contention?.subpoints.filter(sub => sub.subpointID === contSub?.subpointID?? "")[0];

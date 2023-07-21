@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { capitalize, colorFromType, contSubToString, getContSub } from "../../utils/helpers";
 import { ArrowsAngleExpand, StarFill } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +23,7 @@ export default function CardTemplate(props: {children: ReactNode, card: AnyCard}
 
   const {contention, subpoint} = getContSub(contSub);
 
-  possiblyNullifyContSub(cardID, contention, subpoint);
+  useEffect(() => {possiblyNullifyContSub(cardID, contention, subpoint)}, []);
 
   return(
     <div className="relative full rounded overflow-clip">

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import PublicPrivateSelector from "../../../../components/UI/selectors/PublicPrivateSelector";
 import { ExclamationCircle } from "react-bootstrap-icons";
 import { useQueryClient } from "react-query";
-import ContSubSelector from "../../../../components/UI/selectors/ContSubSelector";
 import RebuttalCard from "../../../../components/cards/RebuttalCard";
 
 export default function CreateRebuttalPage(){
@@ -19,7 +18,6 @@ export default function CreateRebuttalPage(){
     type: "rebuttal",
     cardID: "",
     ownerUID: user.uid,
-    teamID: user.teamID,
     school: user.school,
     isPublic: false,
     createTime: 0,

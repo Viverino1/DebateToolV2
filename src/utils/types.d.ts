@@ -82,4 +82,9 @@ type Team = {
   invites: {[key: string]: {inviteTime: number, permission: TeamPermission}}
 }
 
+type Round = {
+  title: string,
+  competition: string,
+}
+
 type AnyCard = (Evidence | Rebuttal | Quote | Statistic) & {contSub?: ContSub};

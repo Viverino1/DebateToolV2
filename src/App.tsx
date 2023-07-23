@@ -23,6 +23,7 @@ import EvidenceCardExpanded from "./components/cards/expanded/EvidenceCardExpand
 import RebuttalCardExpanded from "./components/cards/expanded/RebuttalCardExpanded";
 import QuoteCardExpanded from "./components/cards/expanded/QuoteCardExpanded";
 import StatisticCardExpanded from "./components/cards/expanded/StatisticCardExpanded";
+import RoundPage from "./pages/rounds/RoundPage";
 
 export default function App(){
   const location = useLocation().pathname;
@@ -60,7 +61,10 @@ export default function App(){
               </Route>
             </Route>
             <Route path="/case" element={<CasePage/>}/>
-            <Route path="/rounds" element={<RoundsPage/>}/>
+            <Route path="/rounds">
+              <Route index element={<RoundsPage/>}/>
+              <Route path="id" element={<RoundPage/>}/>
+            </Route>
 
             <Route path="/settings" element={<SettingsPage/>}/>
             

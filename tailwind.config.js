@@ -12,13 +12,13 @@ const customColors = {
     DEFAULT: colors.amber[cardColorsValue],
   },
   rebuttal: {
-    DEFAULT: colors.green[cardColorsValue],
+    DEFAULT: colors.teal[cardColorsValue],
   },
   quote: {
-    DEFAULT: colors.cyan[cardColorsValue],
+    DEFAULT: colors.lime[cardColorsValue],
   },
   statistic: {
-    DEFAULT: colors.violet[cardColorsValue],
+    DEFAULT: colors.sky[cardColorsValue],
   },
 }
 
@@ -67,7 +67,7 @@ export default{
         text: {
           dark: colors.neutral[500],
           DEFAULT: colors.neutral[400],
-          light: colors.neutral[200],
+          light: colors.neutral[300],
           extraLight: colors.neutral[100],
         },
       },
@@ -90,6 +90,7 @@ export default{
     },
   },
   plugins: [
+    require("daisyui"),
     ({ addUtilities }) => {
       addUtilities({
         ".transition": {

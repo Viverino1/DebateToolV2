@@ -16,6 +16,8 @@ export default function CardsPage(){
 
   const [cards, setCards] = useState<AnyCard[]>([]);
 
+  const [searchQuery, setSearchQuery] = useState("");
+
   useLayoutEffect(() => {
     var newCards: AnyCard[] = [];
     if(!cardsObject){return}
@@ -25,14 +27,26 @@ export default function CardsPage(){
     });
 
     newCards.sort(function(a, b){return b.lastEditTime-a.lastEditTime});
-    setCards(newCards);
 
-    console.log("%cFiltered Cards: ", 'color: yellow;', newCards);
-  }, [cardsObject]);
+    newCards = newCards.filter(card => (
+      card.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      card.data.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      card.warrant.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      card.sourceName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      card.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (card as Rebuttal).accusation?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (card as Rebuttal).counterClaim?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (card as Quote).quotee?.toLowerCase().includes(searchQuery.toLowerCase())
+    ));
+
+    setCards(newCards);
+  }, [cardsObject, searchQuery]);
 
   return(
     <div className="w-full h-full p-2 overflow-auto">
-      <Searchbar/>
+      <Searchbar 
+      onChange={(query) => setSearchQuery(query)}
+      />
       <button className="absolute z-30 bottom-4 right-4 !rounded-full !w-14 !h-14 center button-primary text-text-light" onClick={() => navigate("create")}>
         <PlusLg size={40}/>
       </button>

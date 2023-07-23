@@ -1,7 +1,7 @@
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 
-const Tiptap = () => {
+export default function TextBox(){
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -16,5 +16,3 @@ const Tiptap = () => {
     <EditorContent editor={editor} />
   )
 }
-
-export default Tiptap

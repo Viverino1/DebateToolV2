@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { TypeBold, TypeItalic } from "react-bootstrap-icons";
 import { useStopwatch, useTimer } from "react-timer-hook";
-import Tiptap from "../../utils/tiptap/Tiptap";
+import TextBox from "../../utils/tiptap/TextBox";
 
 export default function RoundPage(){
   const myTime = 1000*60*4;
@@ -54,7 +53,7 @@ export default function RoundPage(){
   return(
     <div className="w-full h-full flex p-4 space-x-4">
       <div className="w-full h-full">
-        <Tiptap />
+        <TextBox/>
       </div>
       <div><div className="flex flex-col space-y-4 w-96 h-full overflow-auto">
         <div className="w-full h-fit background p-4 text-center">

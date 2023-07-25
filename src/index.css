@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -24,4 +24,43 @@ select:-webkit-autofill:focus {
 
 ::-webkit-scrollbar-thumb {
   @apply bg-background-light rounded-full
+}
+
+.ProseMirror {
+  max-height: calc(100% - 84px);
+  @apply w-full h-full background p-2 text-xl overflow-auto
+}
+
+.ProseMirror ul{
+  @apply pl-6
+}
+
+.ProseMirror ol{
+  @apply pl-6
+}
+
+@layer base {
+  ul, ol {
+    list-style: revert;
+  }
+
+  h1{
+    @apply text-6xl font-bold
+  }
+
+  h2{
+    @apply text-4xl font-bold
+  }
+
+  h3{
+    @apply text-2xl font-bold
+  }
+
+  blockquote{
+    @apply pl-3 ml-6 border-l-4 border-primary font-bold
+  }
+
+  hr{
+    @apply my-4 opacity-70
+  }
 }

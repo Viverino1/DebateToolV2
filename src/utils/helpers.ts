@@ -122,6 +122,51 @@ function contSubToString(contention: Contention | undefined, subpoint: Subpoint 
   }
 }
 
+const dummySpeech: Speech = {
+  startTime: 23250,
+  endTime: 90210,
+  text: "Here is saved the speech or notes.",
+}
+
+const dummyRound: Round = {
+  roundID: "roundID",
+  title: "Pattonville Round 3",
+  info: "This was the first round we used our AFF case in.",
+
+  self: {
+    teamCode: "D4",
+    speaker1: "Pardhu Konakandla",
+    speaker2: "Vivek Maddineni",
+
+    speeches: {
+      intro: dummySpeech,
+      crossfire1: dummySpeech,
+      rebuttal: dummySpeech,
+      crossfire2: dummySpeech,
+      summary: dummySpeech,
+      grandCrossfire: dummySpeech,
+      final: dummySpeech
+    }
+  },
+  
+  opp: {
+    teamCode: "E6",
+    speaker1: "John Doe",
+    speaker2: "Nancy Smith",
+    school: "Marquette High School",
+
+    speeches: {
+      intro: dummySpeech,
+      crossfire1: dummySpeech,
+      rebuttal: dummySpeech,
+      crossfire2: dummySpeech,
+      summary: dummySpeech,
+      grandCrossfire: dummySpeech,
+      final: dummySpeech
+    }
+  }
+}
+
 export {
   getValue,
   capitalize,
@@ -133,4 +178,5 @@ export {
   dummyRebuttalCard,
   dummyQuoteCard,
   dummyStatisticCard,
+  dummyRound,
 }

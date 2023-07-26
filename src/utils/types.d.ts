@@ -83,8 +83,50 @@ type Team = {
 }
 
 type Round = {
+  roundID: string,
   title: string,
-  competition: string,
+  info: string,
+
+  self: {
+    teamCode: string,
+    speaker1: string,
+    speaker2: string,
+
+    speeches: {
+      intro: Speech,
+      crossfire1: Speech,
+      rebuttal: Speech,
+      crossfire2: Speech,
+      summary: Speech,
+      grandCrossfire: Speech,
+      final: Speech
+    }
+  },
+
+  opp: {
+    teamCode: string,
+
+    speaker1: string,
+    speaker2: string,
+
+    school: string,
+
+    speeches: {
+      intro: Speech,
+      crossfire1: Speech,
+      rebuttal: Speech,
+      crossfire2: Speech,
+      summary: Speech,
+      grandCrossfire: Speech,
+      final: Speech
+    }
+  },
+}
+
+type Speech = {
+  startTime: number,
+  endTime: number,
+  text: string,
 }
 
 type AnyCard = (Evidence | Rebuttal | Quote | Statistic) & {contSub?: ContSub};

@@ -26,7 +26,7 @@ export default function RoundPage(){
           <div className="text-text text-base ">Pattonville Round 3</div>
           <div className="text-text-light text-3xl font-bold">NEG Rebuttal</div>
         </div>
-        <Timer time={1000*60*4}/>
+        <Timer time={1000*5}/>
         <div>
           <div className="w-full h-52 overflow-auto p-4 background flex flex-col space-y-4 snap-y pr-2">
             {speeches.map((speech, index) => (

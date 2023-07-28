@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom"
-import { dummyRound } from "../../utils/helpers";
 import RoundCard from "./compnents/RoundCard";
 import Searchbar from "../../components/Searchbar";
 import { useState } from "react";
 import { RocketTakeoff } from "react-bootstrap-icons";
 import Divider from "../../components/Divider";
 import { useQueryClient } from "react-query";
+import { emptyRound, getValue } from "../../utils/helpers";
+import { launchRound } from "../../utils/firebase/firestore/team.firestore";
 
 export default function RoundsPage(){
   const navigate = useNavigate();
@@ -17,15 +18,7 @@ export default function RoundsPage(){
   const [isNewMenuActive, setIsNewMenuActive] = useState(false);
 
   const rounds: {[key: string]: Round} = {
-    "ID1": dummyRound,
-    // "ID2": dummyRound,
-    // "ID3": dummyRound,
-    // "ID4": dummyRound,
-    // "ID5": dummyRound,
-    // "ID6": dummyRound,
-    // "ID7": dummyRound,
-    // "ID8": dummyRound,
-    // "ID9": dummyRound,
+    
   }
 
   return(
@@ -34,21 +27,38 @@ export default function RoundsPage(){
         <div className="!backdrop-blur-3xl flex flex-col justify-center items-center  w-full">
           <div className="w-3/5 h-fit text-center flex flex-col items-center">
             <h1 className="text-4xl text-text-light pb-2">Launch New Round</h1>
-            <input type="text" className="input" placeholder="Title"/>
-            <input type="text" className="input mt-4" placeholder="Team Code"/>
-            <input type="text" className="input mt-4" placeholder="Details"/>
+            <input type="text" className="input" placeholder="Title" id="title"/>
+            <input type="text" className="input mt-4" placeholder="Details" id="info"/>
+
+            <h2 className="text-xl mb-1 mt-4 w-full text-left">Self</h2>
+            <input type="text" className="input" placeholder="Team Code" id="oppTeamCode"/>
+            <div className="flex space-x-4 pt-4 w-full">
+              <input type="text" className="input" placeholder="First Speaker Name" id="oppSpeaker1"/>
+              <input type="text" className="input" placeholder="Second Speaker Name" id="oppSpeaker2"/>
+              
+            </div>
 
             <h2 className="text-xl mb-1 mt-4 w-full text-left">Opposition</h2>
             <div className="flex space-x-4 w-full">
-              <input type="text" className="input" placeholder="School"/>
-              <input type="text" className="input !w-1/3" placeholder="Team Code"/>
+              <input type="text" className="input" placeholder="School" id="oppSchool"/>
+              <input type="text" className="input !w-1/3" placeholder="Team Code" id="oppTeamCode"/>
             </div>
             <div className="flex space-x-4 pt-4 w-full">
-              <input type="text" className="input" placeholder="First Speaker Name"/>
-              <input type="text" className="input" placeholder="Second Speaker Name"/>
+              <input type="text" className="input" placeholder="First Speaker Name" id="oppSpeaker1"/>
+              <input type="text" className="input" placeholder="Second Speaker Name" id="oppSpeaker2"/>
             </div>
             <button className="button-primary text-text-light font-bold !w-48 mt-4"
-            onClick={() => setIsNewMenuActive(false)}
+            onClick={() => {
+              const round: Round = {...emptyRound};
+              round.info = getValue("info");
+              round.title = getValue("title");
+              round.self.teamCode = getValue("teamCode");
+              round.opp.speaker1 = getValue("oppSpeaker1");
+              round.opp.speaker2 = getValue("oppSpeaker2");
+              round.opp.school = getValue("oppSchool");
+              round.opp.teamCode = getValue("oppTeamCode");
+              launchRound(round);
+            }}
             >Launch Round</button>
           </div>
         </div>

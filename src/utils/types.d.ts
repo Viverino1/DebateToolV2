@@ -74,12 +74,14 @@ type Statistic = Card & {
 
 type TeamPermission = "owner" | "member" | "viewer";
 
+type TeamInvite = {inviteTime: number, permission: TeamPermission};
+
 type Team = {
   teamID: string,
   teamName: string,
   contentions: Contention[];
   members: {[key: string]: {memberSince: number, permission: TeamPermission}}
-  invites: {[key: string]: {inviteTime: number, permission: TeamPermission}}
+  invites: {[key: string]: TeamInvite}
 }
 
 type Round = {

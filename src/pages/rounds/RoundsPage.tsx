@@ -7,6 +7,7 @@ import Divider from "../../components/Divider";
 import { useQueryClient } from "react-query";
 import { emptyRound, getValue } from "../../utils/helpers";
 import { launchRound } from "../../utils/firebase/firestore/team.firestore";
+import TeamMemberSelector from "../../components/UI/selectors/TeamMemberSelector";
 
 export default function RoundsPage(){
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ export default function RoundsPage(){
             <h2 className="text-xl mb-1 mt-4 w-full text-left">Self</h2>
             <input type="text" className="input" placeholder="Team Code" id="oppTeamCode"/>
             <div className="flex space-x-4 pt-4 w-full">
-              <input type="text" className="input" placeholder="First Speaker Name" id="oppSpeaker1"/>
+              <TeamMemberSelector/>
               <input type="text" className="input" placeholder="Second Speaker Name" id="oppSpeaker2"/>
               
             </div>

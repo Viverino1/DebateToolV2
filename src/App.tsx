@@ -4,7 +4,7 @@ import Sidebar from "./components/Sidebar";
 import { auth } from "./utils/firebase/firebase";
 import {useAuthState} from "react-firebase-hooks/auth";
 import CardsPage from "./pages/cards/CardsPage";
-import { getCurrentUser } from "./utils/firebase/firestore/firestore";
+import { getCurrentUser, getTopics } from "./utils/firebase/firestore/firestore";
 import { useQuery } from "react-query";
 import Loading from "./components/Loading";
 import SettingsPage from "./pages/settings/SettingsPage";
@@ -24,6 +24,7 @@ import RebuttalCardExpanded from "./components/cards/expanded/RebuttalCardExpand
 import QuoteCardExpanded from "./components/cards/expanded/QuoteCardExpanded";
 import StatisticCardExpanded from "./components/cards/expanded/StatisticCardExpanded";
 import RoundPage from "./pages/rounds/RoundPage";
+import Invite from "./pages/invite/Invite";
 
 export default function App(){
   const location = useLocation().pathname;
@@ -33,8 +34,9 @@ export default function App(){
   const {isLoading: isCurrentUserLoading, data: currentUser} = useQuery('currentUser', getCurrentUser, {enabled: user? true : false});
   const {isLoading: isCardsLoading, data: cards} = useQuery('cards', getCards, {enabled: user && currentUser? true : false});
   const {isLoading: isTeamLoading} = useQuery('team', getTeam, {enabled: user && currentUser? true : false});
+  const {isLoading: isTopicsLoading} = useQuery('topics', getTopics);
 
-  if(isAuthLoading || isCurrentUserLoading || isCardsLoading || isTeamLoading){return <Loading/>}
+  if(isAuthLoading || isCurrentUserLoading || isCardsLoading || isTeamLoading || isTopicsLoading){return <Loading/>}
 
   if(user && currentUser){
     return(
@@ -43,6 +45,7 @@ export default function App(){
         <div className="fixed top-0 right-0 left-22 bottom-0 h-full">
           <Routes>
             <Route path="/home" element={<HomePage/>}/>
+            <Route path="/invite/*" element={<Invite/>}/>
             <Route path="/cards">
               <Route index element={<CardsPage/>}/>
               {Object.keys(cards as object).map(cardID => (

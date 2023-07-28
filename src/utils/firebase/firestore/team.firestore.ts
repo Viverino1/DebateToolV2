@@ -38,7 +38,6 @@ async function createTeam(teamName: string, teamMemberEmail: string){
 }
 
 async function getTeam(){
-  console.log("%cGetting team: ", 'color: green;');
   const user = queryClient.getQueryData("currentUser") as User;
   const teamID = user.teamID;
   if(!teamID){console.log("No User ID"); return null}
@@ -54,7 +53,7 @@ async function getTeam(){
   const teamDocRef = doc(db, "teams", teamID);
 
   team.teamName = ((await getDoc(teamDocRef)).data() as any).teamName;
-  team.contentions = await getContentions();
+  team.contentions = await getContentions(teamID);
 
   const members = await (await getDocs(collection(teamDocRef, "members"))).docs;
   members.forEach(doc => team.members[doc.id] = doc.data() as any);
@@ -62,7 +61,32 @@ async function getTeam(){
   const invites = await (await getDocs(collection(teamDocRef, "invites"))).docs;
   invites.forEach(doc => team.invites[doc.id] = doc.data() as any);
   
-  console.log("%cTeam: ", 'color: green;', team);
+  console.log(`%cTeam ${teamID}: `, 'color: green;', team);
+
+  return team;
+}
+
+async function getTeamByID(teamID: string){
+  const team: Team = {
+    teamID: teamID,
+    teamName: "",
+    contentions: [],
+    members: {},
+    invites: {},
+  }
+
+  const teamDocRef = doc(db, "teams", teamID);
+
+  team.teamName = ((await getDoc(teamDocRef)).data() as any).teamName;
+  team.contentions = await getContentions(teamID);
+
+  const members = await (await getDocs(collection(teamDocRef, "members"))).docs;
+  members.forEach(doc => team.members[doc.id] = doc.data() as any);
+
+  const invites = await (await getDocs(collection(teamDocRef, "invites"))).docs;
+  invites.forEach(doc => team.invites[doc.id] = doc.data() as any);
+  
+  console.log(`%cTeam ${teamID}: `, 'color: green;', team);
 
   return team;
 }
@@ -87,11 +111,10 @@ async function saveContentions(contentions: Contention[]){
   })
 }
 
-async function getContentions(){
+async function getContentions(teamID: string){
   const {topic, side} = store.getState().app;
-  const user = queryClient.getQueryData("currentUser") as User;
 
-  const docRef = doc(db, "teams", user.teamID as string, "contentions", topic);
+  const docRef = doc(db, "teams", teamID as string, "contentions", topic);
 
   const docData = ((await getDoc(docRef)).data() as any);
   const contentionsObject = docData && side in docData? docData[side] : undefined;
@@ -173,10 +196,20 @@ async function launchRound(round: Round){
   return roundWithID;
 }
 
+async function getTeamInvite(teamID: string){
+  const user = queryClient.getQueryData("currentUser") as User;
+  const docRef = doc(db, "teams", teamID, "invites", user.uid);
+  const invite = (await getDoc(docRef)).data() as TeamInvite;
+  console.log(`%cInvite to ${teamID}: `, 'color: green;', invite);
+  return invite;
+}
+
 export{
   createTeam,
   getTeam,
+  getTeamByID,
   saveContentions,
   possiblyNullifyContSub,
-  launchRound
+  launchRound,
+  getTeamInvite,
 }

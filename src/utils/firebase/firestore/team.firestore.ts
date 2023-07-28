@@ -159,9 +159,24 @@ async function possiblyNullifyContSub(cardID: string, contention: Contention | u
   console.log(`Nullified ${cardID}`);
 }
 
+async function launchRound(round: Round){
+
+  const team = queryClient.getQueryData('team') as Team;
+  const {topic, side} = store.getState().app;
+
+  const docRef = doc(collection(db, "teams", team.teamID, "rounds", topic, side));
+
+  const roundWithID: Round = {...round, roundID: docRef.id};
+
+  //await setDoc(docRef, roundWithID);
+
+  return roundWithID;
+}
+
 export{
   createTeam,
   getTeam,
   saveContentions,
   possiblyNullifyContSub,
+  launchRound
 }

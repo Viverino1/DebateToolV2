@@ -122,47 +122,44 @@ function contSubToString(contention: Contention | undefined, subpoint: Subpoint 
   }
 }
 
-const dummySpeech: Speech = {
-  startTime: 23250,
-  endTime: 90210,
-  text: "Here is saved the speech or notes.",
+const emptySpeech: Speech = {
+  startTime: 0,
+  endTime: 0,
+  text: ""
 }
 
-const dummyRound: Round = {
-  roundID: "roundID",
-  title: "Pattonville Round 3",
-  info: "This was the first round we used our AFF case in.",
-
+const emptyRound: Round = {
+  roundID: "",
+  title: "",
+  info: "",
   self: {
-    teamCode: "D4",
-    speaker1: "Pardhu Konakandla",
-    speaker2: "Vivek Maddineni",
-
+    teamCode: "",
+    speaker1: "",
+    speaker2: "",
     speeches: {
-      intro: dummySpeech,
-      crossfire1: dummySpeech,
-      rebuttal: dummySpeech,
-      crossfire2: dummySpeech,
-      summary: dummySpeech,
-      grandCrossfire: dummySpeech,
-      final: dummySpeech
+      intro: emptySpeech,
+      crossfire1: emptySpeech,
+      rebuttal: emptySpeech,
+      crossfire2: emptySpeech,
+      summary: emptySpeech,
+      grandCrossfire: emptySpeech,
+      final: emptySpeech,
     }
   },
-  
-  opp: {
-    teamCode: "E6",
-    speaker1: "John Doe",
-    speaker2: "Nancy Smith",
-    school: "Marquette High School",
 
+  opp: {
+    teamCode: "",
+    speaker1: "",
+    speaker2: "",
+    school: "",
     speeches: {
-      intro: dummySpeech,
-      crossfire1: dummySpeech,
-      rebuttal: dummySpeech,
-      crossfire2: dummySpeech,
-      summary: dummySpeech,
-      grandCrossfire: dummySpeech,
-      final: dummySpeech
+      intro: emptySpeech,
+      crossfire1: emptySpeech,
+      rebuttal: emptySpeech,
+      crossfire2: emptySpeech,
+      summary: emptySpeech,
+      grandCrossfire: emptySpeech,
+      final: emptySpeech,
     }
   }
 }
@@ -178,5 +175,5 @@ export {
   dummyRebuttalCard,
   dummyQuoteCard,
   dummyStatisticCard,
-  dummyRound,
+  emptyRound
 }

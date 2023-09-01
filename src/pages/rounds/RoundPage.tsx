@@ -1,55 +1,52 @@
+import { doc, onSnapshot } from "firebase/firestore";
 import TextBox from "../../utils/tiptap/TextBox";
 import Timer from "./compnents/Timer";
+import db from "../../utils/firebase/firestore/firestore";
+import { useQueryClient } from "react-query";
+import { useAppSelector } from "../../utils/redux/hooks";
+import { useEffect, useState } from "react";
+import { emptyRound, mapper } from "../../utils/helpers";
+import { CaretLeftFill, CaretRightFill } from "react-bootstrap-icons";
 
-export default function RoundPage(){
-  const speeches: {name: string, duration: string}[] = [
-    {name: "AFF Opening", duration: "04:08"},
-    {name: "NEG Opening", duration: "04:12"},
-    {name: "First Crossfire", duration: "03:04"},
-    {name: "AFF Rebuttal", duration: "03:59"},
-    {name: "NEG Rebuttal", duration: "current"},
-    {name: "Second Crossfire", duration: ""},
-    {name: "AFF Summary", duration: ""},
-    {name: "NEG Summary", duration: ""},
-    {name: "Grand Crossfire", duration: ""},
-    {name: "AFF Final Focus", duration: ""},
-    {name: "NEG Final Focus", duration: ""},
-  ]
+export default function RoundPage(props: {roundID: string}){
+  const team = useQueryClient().getQueryData('team') as Team;
+  const {topic, side} = useAppSelector(state => state.app);
+
+  const docRef = doc(db, "teams", team.teamID, "rounds", topic, side, props.roundID);
+
+  const [round, setRound] = useState(emptyRound);
+
+  const sideOfTeam = (team: "opp" | "self") => team == "self"? side : side == "AFF"? "NEG" : "AFF";
+
+  const [currentSpeech, setCurrentSpeech] = useState<{team: "self" | "opp", key: string}>({
+    key: "intro",
+    team: round.firstTeam,
+  });
+
+  useEffect(() => {
+    const unsub = onSnapshot(docRef, (doc) => {
+      setRound(doc.data() as Round);
+    });
+    return () => {
+      unsub();
+    }
+  }, []);
   
   return(
     <div className="w-full h-full flex p-4 space-x-4">
-      <div className="h-full w-[calc(100vw-472px)]">
+      <div className="h-full w-[calc(100vw-theme(space.96))]">
         <TextBox/>
       </div>
       <div className="flex flex-col space-y-4 w-96 h-full">
         <div className="w-full h-fit background p-4 text-center">
-          <div className="text-text text-base ">Pattonville Round 3</div>
-          <div className="text-text-light text-3xl font-bold">NEG Rebuttal</div>
+          <div className="text-text text-base ">{round.title}</div>
+          <div className="text-text-light text-3xl font-bold">{sideOfTeam(currentSpeech.team)} {mapper(currentSpeech.key)}</div>
         </div>
-        <Timer time={1000*5}/>
-        <div>
-          <div className="w-full h-52 overflow-auto p-4 background flex flex-col space-y-4 snap-y pr-2">
-            {speeches.map((speech, index) => (
-              <button 
-              id={`speech${index}`} key={speech.name} 
-              className="w-full input flex justify-between snap-center"
-              onClick={() => handleScroll(`speech${index}`)}
-              >
-                <span>{speech.name}</span>
-                <span>{speech.duration}</span>
-              </button>
-            ))}
-          </div>
-        </div>
+
+        <Timer/>
+
+        <div className="w-full h-full background"></div>
       </div>
     </div>
   )
-}
-
-function handleScroll(id: string){
-  const element = document.getElementById(id);
-  if (element) {
-    // 👇 Will scroll smoothly to the top of the next section
-    element.scrollIntoView({ behavior: 'smooth' });
-  }
 }

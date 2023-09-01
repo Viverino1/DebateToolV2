@@ -55,7 +55,7 @@ async function getUserByEmail(email: string){
 
 async function getUserByUID(uid: string){
   const user = (await getDoc(doc(usersCol, uid))).data() as User;
-  console.log(`%c${uid}`, 'color: green;', user);
+  console.log(`%cUser ${uid}: `, 'color: green;', user);
   return user;
 }
 

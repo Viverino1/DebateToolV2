@@ -73,21 +73,24 @@ type Statistic = Card & {
 }
 
 type TeamPermission = "owner" | "member" | "viewer";
-
 type TeamInvite = {inviteTime: number, permission: TeamPermission};
+type TeamMember = {memberSince: number, permission: TeamPermission};
 
 type Team = {
   teamID: string,
   teamName: string,
   contentions: Contention[];
-  members: {[key: string]: {memberSince: number, permission: TeamPermission}}
+  members: {[key: string]: TeamMember}
   invites: {[key: string]: TeamInvite}
+  rounds: {[key: string]: Round}
 }
 
 type Round = {
   roundID: string,
   title: string,
   info: string,
+  isActive: boolean,
+  firstTeam: "self" | "opp",
 
   self: {
     teamCode: string,
@@ -123,6 +126,11 @@ type Round = {
       final: Speech
     }
   },
+}
+
+type SpeechIdentifier = {
+  team: "opp" | "self",
+  key: string,
 }
 
 type Speech = {

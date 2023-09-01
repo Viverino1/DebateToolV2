@@ -28,9 +28,9 @@ export default function TextBox(props: {onChange?: (content: string) => void}){
   });
 
   return (
-    <div className='h-full space-y-4'>
+    <div className='h-full space-y-4 flex flex-col'>
         <div className='overflow-x-auto overflow-y-clip h-16 background p-2 flex items-center space-x-2'>
-        <button 
+          <button 
           onClick={() => editor?.chain().focus().undo().run()}
           disabled={
             !editor?.can()

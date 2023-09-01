@@ -6,7 +6,6 @@ export default function RoundCard(props: {round: Round}){
     roundID,
     title,
     info,
-    self,
     opp,
   } = props.round;
   return(

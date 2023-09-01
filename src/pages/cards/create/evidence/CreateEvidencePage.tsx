@@ -6,7 +6,6 @@ import PublicPrivateSelector from "../../../../components/UI/selectors/PublicPri
 import { ExclamationCircle } from "react-bootstrap-icons";
 import { useQueryClient } from "react-query";
 import ContSubSelector from "../../../../components/UI/selectors/ContSubSelector";
-import TextBox from "../../../../utils/tiptap/TextBox";
 
 export default function CreateEvidencePage(props: {editCard?: Evidence}){
   const navigate = useNavigate();

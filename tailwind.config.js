@@ -120,13 +120,13 @@ const config = {
         },
 
         ".background": {
-          "@apply bg-background/50 rounded border-2 border-background-light outline-none appearance-none backdrop-blur-sm": {}
+          "@apply bg-background/50 rounded border-2 border-background-light appearance-none backdrop-blur-sm": {}
         },
         ".background-light": {
-          "@apply bg-background-light/50 rounded border-2 border-secondary outline-none appearance-none backdrop-blur-3xl": {}
+          "@apply bg-background-light/50 rounded border-2 border-secondary appearance-none backdrop-blur-3xl": {}
         },
         ".input": {
-          "@apply background text-lg p-2 placeholder:text-text-dark hover:border-secondary transition w-full h-12 disabled:opacity-50 hover:bg-background focus:bg-background": {}
+          "@apply background text-lg p-2 placeholder:text-text-dark hover:border-secondary transition w-full h-12 disabled:opacity-50 disabled:background hover:bg-background focus:bg-background": {}
         },
         ".input-focus": {
           "@apply focus:border-secondary focus:bg-background hover:bg-background": {}

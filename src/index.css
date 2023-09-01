@@ -27,8 +27,7 @@ select:-webkit-autofill:focus {
 }
 
 .ProseMirror {
-  max-height: calc(100% - 84px);
-  @apply w-full h-full background p-2 text-xl overflow-auto
+  @apply w-full h-full background p-2 text-xl overflow-auto outline-none
 }
 
 .ProseMirror ul{

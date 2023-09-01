@@ -1,58 +1,43 @@
-import { useStopwatch, useTimer } from "react-timer-hook";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import Countdown from "react-countdown";
 
-export default function Timer(props: {time: number}){
-  const [isOvertime, setIsOvertime] = useState(false);
-
-  const { time: myTime } = props;
-
-  const {
-    minutes: stopwatchMin,
-    seconds: stopwatchSec,
-    start: stopwatchStart,
-    pause: stopwatchPause,
-    reset: stopwatchReset,
-    isRunning: isStopwatchRunning,
-  } = useStopwatch({autoStart: false});
-
-  const { 
-    minutes: timerMin,
-    seconds: timerSec, 
-    pause: timerPause, 
-    restart: timerRestart, 
-    resume: timerResume,
-    isRunning: isTimerRunning,
-  } = useTimer({
-    expiryTimestamp: new Date(Date.now() + myTime),
-    autoStart: false,
-    onExpire: () => {
-      console.log("timer expired");
-      setIsOvertime(true);
-      stopwatchStart();
-    }
-  });
-
+function Timer(props: {minutes: number, seconds: number, completed: boolean}){
+  const {minutes, seconds, completed} = props;
   return(
-    <div className="w-full h-fit background p-4 flex flex-col text-center">
-      <div className={`transition ${!isOvertime? "text-base" : ""}`}>{!isOvertime? "Remaining Time" : "Overtime"}</div>
-      
-      <div className={`h-full ${isOvertime? "text-primary" : "text-text-light"} text-6xl flex justify-center font-bold`}>
+    <>
+      <h1 className={`${!completed? "text-base text-text font-normal" : "text-xl text-text-light font-bold"} transition`}>{!completed? "Time Remaining" : "Overtime"}</h1>
+      <div className={`h-full ${!completed? "text-text-light" : "text-primary"} text-6xl flex justify-center font-bold`}>
         <span className="countdown">
-          <span style={{"--value":(!isOvertime? timerMin: stopwatchMin)} as React.CSSProperties}></span>
+          <span style={{"--value":(minutes)} as React.CSSProperties}></span>
         </span>
         <span className="-translate-y-1 transition">:</span>
         <span className="countdown">
-          <span style={{"--value":(!isOvertime? timerSec: stopwatchSec)} as React.CSSProperties}></span>
+          <span style={{"--value":(seconds)} as React.CSSProperties}></span>
         </span>
       </div>
-      <div className="flex space-x-4 text-text-extraLight mt-4">
-        <button className="button-primary !h-8" onClick={!isOvertime? (isTimerRunning? timerPause : timerResume) : (isStopwatchRunning? stopwatchPause : stopwatchStart)}>{(isStopwatchRunning || isTimerRunning)? "Stop" : "Start"}</button>
-        <button className="button-primary !h-8" onClick={() => {
-          timerRestart(new Date(Date.now() + myTime), false); 
-          stopwatchReset(undefined, false);
-          setIsOvertime(false);
-          }}>Reset</button>
-      </div>
+    </>
+  )
+}
+
+export default function(){
+  const ref = useRef(null);
+
+  return(
+      <div className="background p-4 pt-2 flex flex-col items-center">
+        <Countdown 
+        date={Date.now() + 2000}
+        renderer={Timer}
+        overtime
+        autoStart={false}
+        ref={ref}
+      />
+      <button 
+      onClick={() => {
+        (ref.current as any).start();
+      }}
+      className="p-1 w-full background-light !text-text-light mt-2">{
+        'Start'
+      }</button>
     </div>
   )
 }

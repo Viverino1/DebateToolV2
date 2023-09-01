@@ -24,7 +24,7 @@ import RebuttalCardExpanded from "./components/cards/expanded/RebuttalCardExpand
 import QuoteCardExpanded from "./components/cards/expanded/QuoteCardExpanded";
 import StatisticCardExpanded from "./components/cards/expanded/StatisticCardExpanded";
 import RoundPage from "./pages/rounds/RoundPage";
-import Invite from "./pages/invite/Invite";
+import InvitePage from "./pages/invite/InvitePage";
 
 export default function App(){
   const location = useLocation().pathname;
@@ -33,7 +33,7 @@ export default function App(){
 
   const {isLoading: isCurrentUserLoading, data: currentUser} = useQuery('currentUser', getCurrentUser, {enabled: user? true : false});
   const {isLoading: isCardsLoading, data: cards} = useQuery('cards', getCards, {enabled: user && currentUser? true : false});
-  const {isLoading: isTeamLoading} = useQuery('team', getTeam, {enabled: user && currentUser? true : false});
+  const {isLoading: isTeamLoading, data: team} = useQuery('team', getTeam, {enabled: user && currentUser? true : false});
   const {isLoading: isTopicsLoading} = useQuery('topics', getTopics);
 
   if(isAuthLoading || isCurrentUserLoading || isCardsLoading || isTeamLoading || isTopicsLoading){return <Loading/>}
@@ -45,7 +45,7 @@ export default function App(){
         <div className="fixed top-0 right-0 left-22 bottom-0 h-full">
           <Routes>
             <Route path="/home" element={<HomePage/>}/>
-            <Route path="/invite/*" element={<Invite/>}/>
+            <Route path="/invite/*" element={<InvitePage/>}/>
             <Route path="/cards">
               <Route index element={<CardsPage/>}/>
               {Object.keys(cards as object).map(cardID => (
@@ -66,7 +66,7 @@ export default function App(){
             <Route path="/case" element={<CasePage/>}/>
             <Route path="/rounds">
               <Route index element={<RoundsPage/>}/>
-              <Route path="id" element={<RoundPage/>}/>
+              {Object.keys(team?.rounds?? {}).map(roundID => <Route key={roundID} path={roundID} element={<RoundPage roundID={roundID}/>}/>)}
             </Route>
 
             <Route path="/settings" element={<SettingsPage/>}/>

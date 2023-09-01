@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc } from "firebase/firestore";
 import { queryClient } from "../../../main";
 import db, { getUserByEmail, usersCol } from "./firestore"
 import store from "../../redux/store";
@@ -13,6 +13,7 @@ async function createTeam(teamName: string, teamMemberEmail: string){
     contentions: [],
     members: {},
     invites: {},
+    rounds: {},
   }
 
   const teamMember = await getUserByEmail(teamMemberEmail);
@@ -40,39 +41,23 @@ async function createTeam(teamName: string, teamMemberEmail: string){
 async function getTeam(){
   const user = queryClient.getQueryData("currentUser") as User;
   const teamID = user.teamID;
-  if(!teamID){console.log("No User ID"); return null}
+  if(!teamID){console.log("Null Team ID"); return null}
 
-  const team: Team = {
-    teamID: teamID,
-    teamName: "",
-    contentions: [],
-    members: {},
-    invites: {},
-  }
-
-  const teamDocRef = doc(db, "teams", teamID);
-
-  team.teamName = ((await getDoc(teamDocRef)).data() as any).teamName;
-  team.contentions = await getContentions(teamID);
-
-  const members = await (await getDocs(collection(teamDocRef, "members"))).docs;
-  members.forEach(doc => team.members[doc.id] = doc.data() as any);
-
-  const invites = await (await getDocs(collection(teamDocRef, "invites"))).docs;
-  invites.forEach(doc => team.invites[doc.id] = doc.data() as any);
-  
-  console.log(`%cTeam ${teamID}: `, 'color: green;', team);
+  const team = await getTeamByID(teamID);
 
   return team;
 }
 
 async function getTeamByID(teamID: string){
+  const {topic, side} = store.getState().app;
+
   const team: Team = {
     teamID: teamID,
     teamName: "",
     contentions: [],
     members: {},
     invites: {},
+    rounds: {},
   }
 
   const teamDocRef = doc(db, "teams", teamID);
@@ -81,11 +66,14 @@ async function getTeamByID(teamID: string){
   team.contentions = await getContentions(teamID);
 
   const members = await (await getDocs(collection(teamDocRef, "members"))).docs;
-  members.forEach(doc => team.members[doc.id] = doc.data() as any);
+  members.forEach(doc => team.members[doc.id] = doc.data() as TeamMember);
 
   const invites = await (await getDocs(collection(teamDocRef, "invites"))).docs;
-  invites.forEach(doc => team.invites[doc.id] = doc.data() as any);
-  
+  invites.forEach(doc => team.invites[doc.id] = doc.data() as TeamInvite);
+
+  const rounds = await (await getDocs(collection(teamDocRef, "rounds", topic, side,))).docs;
+  rounds.forEach(doc => team.rounds[doc.id] = doc.data() as Round);
+
   console.log(`%cTeam ${teamID}: `, 'color: green;', team);
 
   return team;
@@ -183,15 +171,15 @@ async function possiblyNullifyContSub(cardID: string, contention: Contention | u
 }
 
 async function launchRound(round: Round){
-
   const team = queryClient.getQueryData('team') as Team;
   const {topic, side} = store.getState().app;
 
   const docRef = doc(collection(db, "teams", team.teamID, "rounds", topic, side));
-
   const roundWithID: Round = {...round, roundID: docRef.id};
-
-  //await setDoc(docRef, roundWithID);
+  await setDoc(docRef, roundWithID);
+  
+  team.rounds[roundWithID.roundID] = roundWithID;
+  queryClient.setQueryData("team", team);
 
   return roundWithID;
 }
@@ -204,6 +192,20 @@ async function getTeamInvite(teamID: string){
   return invite;
 }
 
+async function acceptTeamInvite(teamID: string, permission: TeamPermission){
+  const user = queryClient.getQueryData("currentUser") as User;
+  const memberDocRef = doc(db, "teams", teamID, "members", user.uid);
+  await setDoc(memberDocRef, {permission: permission, memberSince: Date.now()} as TeamMember);
+
+  const inviteDocRef = doc(db, "teams", teamID, "invites", user.uid);
+  await deleteDoc(inviteDocRef);
+
+  const userDocRef = doc(db, "users", user.uid);
+  await setDoc(userDocRef, {
+    teamID: teamID,
+  }, {merge: true});
+}
+
 export{
   createTeam,
   getTeam,
@@ -212,4 +214,5 @@ export{
   possiblyNullifyContSub,
   launchRound,
   getTeamInvite,
+  acceptTeamInvite,
 }

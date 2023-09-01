@@ -1,4 +1,5 @@
 import { queryClient } from "../main";
+import store from "./redux/store";
 
 function getValue(id: string){
   const inputElement = document.getElementById(id) as HTMLInputElement | null;
@@ -132,6 +133,9 @@ const emptyRound: Round = {
   roundID: "",
   title: "",
   info: "",
+  isActive: true,
+  firstTeam: "self",
+  
   self: {
     teamCode: "",
     speaker1: "",
@@ -164,6 +168,33 @@ const emptyRound: Round = {
   }
 }
 
+const speechesList = [
+  "intro",
+  "crossfire1",
+  "rebuttal",
+  "crossfire2",
+  "summary",
+  "grandCrossfire",
+  "final",
+]
+
+function sideOfTeam(team: "opp" | "self", firstTeam: "opp" | "self"){
+  const side = store.getState().app.side;
+  return firstTeam == "self"? side : side == "AFF"? "NEG" : "AFF"
+};
+
+const lookupTable = {
+  intro: "Opening",
+  crossfire1: "First Crossfire",
+  rebuttal: "Rebuttal",
+  crossfire2: "Second Crossfire",
+  summary: "Summary",
+  grandCrossfire: "Grand Crossfire",
+  final: "Final Focus",
+}
+
+const mapper = (key: any) => (lookupTable as any)[key] || "Error";
+
 export {
   getValue,
   capitalize,
@@ -175,5 +206,9 @@ export {
   dummyRebuttalCard,
   dummyQuoteCard,
   dummyStatisticCard,
-  emptyRound
+  emptyRound,
+  speechesList,
+  sideOfTeam,
+  lookupTable,
+  mapper,
 }

@@ -6,8 +6,6 @@ import { useQueryClient } from "react-query";
 import { useAppSelector } from "../../utils/redux/hooks";
 import { useEffect, useState } from "react";
 import { emptyRound, mapper } from "../../utils/helpers";
-import { CaretLeftFill, CaretRightFill } from "react-bootstrap-icons";
-
 export default function RoundPage(props: {roundID: string}){
   const team = useQueryClient().getQueryData('team') as Team;
   const {topic, side} = useAppSelector(state => state.app);
@@ -18,7 +16,7 @@ export default function RoundPage(props: {roundID: string}){
 
   const sideOfTeam = (team: "opp" | "self") => team == "self"? side : side == "AFF"? "NEG" : "AFF";
 
-  const [currentSpeech, setCurrentSpeech] = useState<{team: "self" | "opp", key: string}>({
+  const [currentSpeech] = useState<{team: "self" | "opp", key: string}>({
     key: "intro",
     team: round.firstTeam,
   });

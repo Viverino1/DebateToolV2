@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { queryClient } from "../../../main";
 import db, { getUserByEmail, usersCol } from "./firestore"
 import store from "../../redux/store";

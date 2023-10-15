@@ -1,5 +1,4 @@
 import { queryClient } from "../main";
-import store from "./redux/store";
 
 function getValue(id: string){
   const inputElement = document.getElementById(id) as HTMLInputElement | null;
@@ -178,11 +177,6 @@ const speechesList = [
   "final",
 ]
 
-function sideOfTeam(team: "opp" | "self", firstTeam: "opp" | "self"){
-  const side = store.getState().app.side;
-  return firstTeam == "self"? side : side == "AFF"? "NEG" : "AFF"
-};
-
 const lookupTable = {
   intro: "Opening",
   crossfire1: "First Crossfire",
@@ -208,7 +202,6 @@ export {
   dummyStatisticCard,
   emptyRound,
   speechesList,
-  sideOfTeam,
   lookupTable,
   mapper,
 }

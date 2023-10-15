@@ -1,5 +1,9 @@
+import RenderCase from "../../components/RenderCase";
+
 export default function CasePage(){
   return(
-    <div>Case Page</div>
+    <div className="w-full h-full p-4">
+      <RenderCase/>
+    </div>
   )
 }

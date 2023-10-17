@@ -53,7 +53,7 @@ export default function CardsPage(){
       <div className="flex flex-wrap w-full h-full pt-20">
         {cards.map(card => (
           <div key={card.cardID} className="p-2 h-1/2 xl:w-1/3 lg:w-1/2 w-full">
-            <RenderCorrectCard card={card as Evidence}/>
+            <RenderCorrectCard card={card}/>
           </div>
         ))}
       </div>

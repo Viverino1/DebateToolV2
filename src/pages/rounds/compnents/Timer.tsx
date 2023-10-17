@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 let targetTime = Math.floor((Date.now()+(1000*5))/1000) * 1000;
 export default function(){
   const overtime = false;
   
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
+  //const [minutes, setMinutes] = useState(0);
+  //const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {

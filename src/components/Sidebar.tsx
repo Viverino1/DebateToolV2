@@ -1,5 +1,5 @@
 import { ReactElement } from "react"
-import { BootstrapReboot, CardHeading, FileEarmarkText } from "react-bootstrap-icons"
+import { CardHeading, FileEarmarkText } from "react-bootstrap-icons"
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../utils/redux/hooks";
 import { setSide, setTopic } from "../utils/redux/reducers/appSlice";
@@ -32,11 +32,11 @@ export default function Sidebar(){
         link="case"
         />
 
-        <Icon 
+        {/* <Icon 
         icon={<BootstrapReboot size={iconSize}/>}
         text="Rounds"
         link="rounds"
-        />
+        /> */}
 
         <Divider/>
 

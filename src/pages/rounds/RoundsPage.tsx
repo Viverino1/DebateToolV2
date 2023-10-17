@@ -14,7 +14,7 @@ export default function RoundsPage(){
 
   const team = useQueryClient().getQueryData("team") as Team;
 
-  const [searchQuery, setSearchQuery] = useState("");
+  //const [searchQuery, setSearchQuery] = useState("");
 
   const [isNewMenuActive, setIsNewMenuActive] = useState(false);
 
@@ -87,7 +87,11 @@ export default function RoundsPage(){
       </div>
 
       <Searchbar 
-      onChange={(query) => setSearchQuery(query)}
+      onChange={(
+        //query
+        ) => {
+        //setSearchQuery(query)
+      }}
       />
       <div className="w-full h-full flex space-x-4">
         <div className="w-full h-full pt-20 pr-72 flex flex-col space-y-4">
